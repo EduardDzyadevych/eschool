@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Єдина Школа — Електронний Журнал</title>
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Іконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -71,22 +71,22 @@
                     </div>
                 </div>
 
-                <!-- Інформація про клас та поточну дату -->
-                <div class="flex items-center space-x-4">
+                <!-- Інформація про клас та дата -->
+                <div class="flex items-center space-x-3">
                     <div class="text-right hidden md:block">
                         <div id="current-date" class="text-xs font-semibold text-brand-200 capitalize"></div>
                         <div class="text-xs font-bold text-white/90">11-А Клас <span class="text-slate-400 font-normal">| 2026/2027 н.р.</span></div>
                     </div>
-                    <!-- Статус Хмари / Firebase -->
+                    <!-- Статус Хмари -->
                     <div id="cloud-status" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs font-bold text-slate-300">
                         <span class="w-2 h-2 rounded-full bg-slate-400" id="cloud-status-dot"></span>
                         <span id="cloud-status-text">Локально</span>
                     </div>
-                    <button onclick="openFirebaseConfigModal()" class="px-3.5 py-2 text-xs font-semibold bg-brand-500/20 hover:bg-brand-500/30 active:scale-95 text-brand-200 rounded-xl transition border border-brand-400/30 backdrop-blur-md flex items-center gap-2 shadow-inner" title="Налаштування Firebase">
+                    <button onclick="openFirebaseConfigModal()" class="px-3.5 py-2 text-xs font-semibold bg-brand-500/20 hover:bg-brand-500/30 active:scale-95 text-brand-200 rounded-xl transition border border-brand-400/30 backdrop-blur-md flex items-center gap-2 shadow-inner">
                         <i class="fa-solid fa-cloud text-brand-300"></i>
                         <span class="hidden sm:inline">Хмара</span>
                     </button>
-                    <button onclick="resetToDemoData()" class="px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl transition border border-white/15 backdrop-blur-md flex items-center gap-2 shadow-inner" title="Скинути до демо-даних">
+                    <button onclick="resetToDemoData()" class="px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl transition border border-white/15 backdrop-blur-md flex items-center gap-2 shadow-inner">
                         <i class="fa-solid fa-rotate-right text-brand-300"></i>
                         <span class="hidden sm:inline">Скинути</span>
                     </button>
@@ -107,7 +107,7 @@
                 </button>
                 <button id="tab-students" onclick="switchTab('students')" class="tab-btn flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-300 hover:text-white hover:bg-white/10">
                     <i class="fa-solid fa-users text-sm"></i>
-                    <span>Список класу & Групи</span>
+                    <span>Список класу & Підгрупи</span>
                 </button>
             </div>
         </div>
@@ -128,7 +128,7 @@
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Урок з розкладу</label>
                         <select id="attendance-lesson-select" onchange="onAttendanceLessonChange()" class="w-full bg-slate-50/80 border border-slate-200 text-slate-800 rounded-xl px-3.5 py-2.5 focus:bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition text-sm font-semibold">
-                            <!-- Динамічно заповнюється -->
+                            <!-- Заповнюється JS -->
                         </select>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                                     <i class="fa-solid fa-link text-[9px] mr-1"></i> Спарений
                                 </span>
                             </div>
-                            <p id="info-lesson-details" class="text-xs text-slate-500 font-medium mt-0.5">Оберіть урок для редагування відвідуваності</p>
+                            <p id="info-lesson-details" class="text-xs text-slate-500 font-medium mt-0.5">Оберіть дата/урок для редагування</p>
                         </div>
                     </div>
                 </div>
@@ -284,7 +284,7 @@
                                 Скасувати
                             </button>
                             <button type="submit" id="save-student-btn" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl text-sm shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-check"></i> <span>Додати до класу</span>
+                                <i class="fa-solid fa-check"></i> <span>Зберегти учня</span>
                             </button>
                         </div>
                     </form>
@@ -323,7 +323,7 @@
                                 </tr>
                             </thead>
                             <tbody id="students-table-body" class="divide-y divide-slate-100 font-medium">
-                                <!-- Динамічно заповнюється -->
+                                <!-- Заповнюється JS -->
                             </tbody>
                         </table>
                     </div>
@@ -335,7 +335,7 @@
 
     <!-- МОДАЛЬНЕ ВІКНО: Додавання / Редагування уроку -->
     <div id="lesson-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-100 transform transition-all">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transform transition-all">
             <div class="p-5 bg-gradient-to-r from-slate-900 via-indigo-900 to-brand-900 text-white flex items-center justify-between">
                 <h3 id="modal-title" class="font-extrabold text-base flex items-center gap-2">
                     <i class="fa-solid fa-calendar-plus text-brand-300"></i> Додати урок в розклад
@@ -362,6 +362,60 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Група / Підгрупа</label>
+                        <select id="lesson-group" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                            <option value="ALL">Весь клас</option>
+                            <option value="Група 1">Група 1</option>
+                            <option value="Група 2">Група 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Назва предмета</label>
+                    <input type="text" id="lesson-subject" required placeholder="напр. Алгебра, Англійська мова" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час початку</label>
+                        <input type="time" id="lesson-time-start" required value="08:30" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час закінчення</label>
+                        <input type="time" id="lesson-time-end" required value="09:15" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Кабінет</label>
+                        <input type="text" id="lesson-room" placeholder="напр. каб. 204" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Вчитель</label>
+                        <input type="text" id="lesson-teacher" placeholder="напр. Іванова О.М." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                        <input type="checkbox" id="lesson-merged" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                        <span class="text-xs font-bold text-slate-700">Об'єднаний (спарений) урок (2 академічні години)</span>
+                    </label>
+                </div>
+
+                <div class="flex gap-2 pt-3">
+                    <button type="button" onclick="closeLessonModal()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition">
+                        Скасувати
+                    </button>
+                    <button type="submit" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check"></i> Зберегти урок
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- МОДАЛЬНЕ ВІКНО: Налаштування Firebase -->
     <div id="firebase-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 transform transition-all">
@@ -376,11 +430,11 @@
 
             <div class="p-5 space-y-4">
                 <p class="text-xs text-slate-600 leading-relaxed">
-                    Вставте свій <b>Firebase Web Config (JSON або JS-об'єкт)</b> нижче, щоб синхронізувати дані електронного журналу між різними пристроями через Firestore у реальному часі.
+                    Вставте свій <b>Firebase Web Config (JSON)</b> нижче для синхронізації даних електронного журналу.
                 </p>
 
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Firebase Config (JSON format)</label>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Firebase Config (JSON)</label>
                     <textarea id="firebase-config-input" rows="7" placeholder='{
   "apiKey": "AIzaSy...",
   "authDomain": "my-school.firebaseapp.com",
@@ -392,7 +446,7 @@
                 </div>
 
                 <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-800">
-                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Якщо поля залишити порожніми, додаток автоматично працюватиме в локальному режимі (збереження у пам'ять браузера).
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Якщо налаштування відсутні, додаток працює в локальному режимі (збереження у пам'ять браузера).
                 </div>
 
                 <div class="pt-2 flex justify-between items-center">
@@ -430,7 +484,7 @@
         let isCloudEnabled = false;
         const APP_ID = 'eschool_main_v1';
 
-        // Ваша конфігурація Firebase eschool-9520b за замовчуванням
+        // Ваша конфігурація Firebase eschool-9520b
         const DEFAULT_FIREBASE_CONFIG = {
             apiKey: "AIzaSyBihb3Wnowa-OoU6tuesFqRpzJujoOCK20",
             authDomain: "eschool-9520b.firebaseapp.com",
@@ -477,7 +531,8 @@
             'Fri': [
                 { id: 'f1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 103', teacher: 'Романова Е.Б.', isMerged: false },
                 { id: 'f2', subject: 'Мистецтво', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 201', teacher: 'Лисенко М.К.', isMerged: false }
-            ]
+            ],
+            'Sat': []
         };
 
         const DAYS_MAP = {
@@ -497,7 +552,7 @@
         let currentTab = 'attendance';
         let selectedDay = 'Mon';
 
-        // Поробимо глобальними потрібні функції для HTML onclick-подій
+        // Прив'язка до window для HTML-подій
         window.switchTab = switchTab;
         window.resetToDemoData = resetToDemoData;
         window.handleAddStudent = handleAddStudent;
@@ -540,7 +595,7 @@
 
             const dayOfWeekIndex = today.getDay();
             const dayKeys = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            selectedDay = dayKeys[dayOfWeekIndex];
+            selectedDay = dayKeys[dayOfWeekIndex] || 'Mon';
             selectDay(selectedDay);
 
             updateAttendanceSelectOptions();
@@ -572,144 +627,155 @@
                     setupFirebaseListeners();
                 } catch(err) {
                     console.error("Помилка підключення до Firebase:", err);
-                    updateCloudStatusUI(false, 'Помилка хмари');
+                    updateCloudStatusUI(false, 'Локальний режим');
                     loadLocalData();
                 }
             } else {
-                updateCloudStatusUI(false, 'Локально');
-                loadLocalData();
+                updateCloudStatusUI(false, 'Локальний режим');
             }
         }
 
         function updateCloudStatusUI(active, text) {
             const dot = document.getElementById('cloud-status-dot');
-            const statusText = document.getElementById('cloud-status-text');
-            if (dot && statusText) {
-                if (active) {
-                    dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-                    statusText.innerText = text;
-                } else {
-                    dot.className = "w-2 h-2 rounded-full bg-slate-400";
-                    statusText.innerText = text;
-                }
+            const txt = document.getElementById('cloud-status-text');
+            if (active) {
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                txt.innerText = text;
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-amber-400";
+                txt.innerText = text;
             }
         }
 
         function setupFirebaseListeners() {
             if (!db) return;
-            const docRef = doc(db, 'schools', APP_ID);
-
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
+            const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'journal', 'mainDoc');
+            
+            onSnapshot(docRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
                     students = data.students || DEMO_STUDENTS;
                     schedule = data.schedule || DEMO_SCHEDULE;
                     attendanceRecords = data.attendanceRecords || {};
-                    
-                    renderStudentsList();
-                    renderSchedule();
-                    updateAttendanceSelectOptions();
+                    refreshAllUI();
                 } else {
-                    saveAllData();
+                    saveData();
                 }
             }, (error) => {
-                console.error("Помилка отримання даних Firebase:", error);
-                showToast("Помилка синхронізації з хмарою", "error");
+                console.warn("Помилка слухача Firebase, перехід на localData", error);
+                isCloudEnabled = false;
+                updateCloudStatusUI(false, 'Локально');
+                loadLocalData();
             });
         }
 
-        async function saveAllData() {
+        async function saveData() {
+            saveLocalData();
+
             if (isCloudEnabled && db) {
                 try {
-                    const docRef = doc(db, 'schools', APP_ID);
+                    const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', 'journal', 'mainDoc');
                     await setDoc(docRef, {
-                        students,
-                        schedule,
-                        attendanceRecords,
+                        students: students,
+                        schedule: schedule,
+                        attendanceRecords: attendanceRecords,
                         updatedAt: new Date().toISOString()
-                    }, { merge: true });
+                    });
                 } catch (e) {
-                    console.error("Помилка збереження в хмару:", e);
+                    console.error("Помилка збереження в Хмару", e);
                 }
-            } else {
-                localStorage.setItem('eschool_students', JSON.stringify(students));
-                localStorage.setItem('eschool_schedule', JSON.stringify(schedule));
-                localStorage.setItem('eschool_attendance', JSON.stringify(attendanceRecords));
             }
         }
 
         function loadLocalData() {
-            const localStudents = localStorage.getItem('eschool_students');
-            const localSchedule = localStorage.getItem('eschool_schedule');
-            const localAttendance = localStorage.getItem('eschool_attendance');
+            const localS = localStorage.getItem('eschool_students');
+            const localSch = localStorage.getItem('eschool_schedule');
+            const localAtt = localStorage.getItem('eschool_attendance');
 
-            students = localStudents ? JSON.parse(localStudents) : DEMO_STUDENTS;
-            schedule = localSchedule ? JSON.parse(localSchedule) : DEMO_SCHEDULE;
-            attendanceRecords = localAttendance ? JSON.parse(localAttendance) : {};
+            students = localS ? JSON.parse(localS) : JSON.parse(JSON.stringify(DEMO_STUDENTS));
+            schedule = localSch ? JSON.parse(localSch) : JSON.parse(JSON.stringify(DEMO_SCHEDULE));
+            attendanceRecords = localAtt ? JSON.parse(localAtt) : {};
+            refreshAllUI();
+        }
+
+        function saveLocalData() {
+            localStorage.setItem('eschool_students', JSON.stringify(students));
+            localStorage.setItem('eschool_schedule', JSON.stringify(schedule));
+            localStorage.setItem('eschool_attendance', JSON.stringify(attendanceRecords));
         }
 
         function resetToDemoData() {
-            students = [...DEMO_STUDENTS];
+            students = JSON.parse(JSON.stringify(DEMO_STUDENTS));
             schedule = JSON.parse(JSON.stringify(DEMO_SCHEDULE));
             attendanceRecords = {};
-            saveAllData();
+            saveData();
+            refreshAllUI();
+            showToast("Дані успішно скинуто до демо-версії");
+        }
+
+        function refreshAllUI() {
             renderStudentsList();
+            renderDayTabs();
             renderSchedule();
             updateAttendanceSelectOptions();
-            showToast("Дані відновлено до початкових");
+            renderAttendanceList();
         }
 
-        // === НАВІГАЦІЯ ТА ВКЛАДКИ ===
-        function switchTab(tabName) {
-            currentTab = tabName;
-            ['attendance', 'schedule', 'students'].forEach(tab => {
-                const sec = document.getElementById(`section-${tab}`);
-                const btn = document.getElementById(`tab-${tab}`);
-                if (tab === tabName) {
-                    sec.classList.remove('hidden');
-                    btn.className = "tab-btn flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 whitespace-nowrap text-white bg-brand-600 shadow-md shadow-brand-600/30";
-                } else {
-                    sec.classList.add('hidden');
-                    btn.className = "tab-btn flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-300 hover:text-white hover:bg-white/10";
-                }
+        // === НАВІГАЦІЯ ===
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('section[id^="section-"]').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap text-slate-300 hover:text-white hover:bg-white/10";
             });
+
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn flex items-center space-x-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 whitespace-nowrap text-white bg-brand-600 shadow-md shadow-brand-600/30";
+            }
         }
 
-        // === УЧНІ ТА ГРУПИ ===
+        // === ВКЛАДКА: СПИСОК КЛАСУ ===
         function renderStudentsList() {
             const tbody = document.getElementById('students-table-body');
             const filterGroup = document.getElementById('student-group-filter').value;
-            const searchQuery = document.getElementById('student-search').value.toLowerCase().trim();
+            const search = document.getElementById('student-search').value.toLowerCase();
 
             let filtered = students.filter(s => {
-                const matchesGroup = filterGroup === 'ALL' || s.group === filterGroup;
-                const matchesSearch = s.lastName.toLowerCase().includes(searchQuery) || s.firstName.toLowerCase().includes(searchQuery);
-                return matchesGroup && matchesSearch;
+                const matchGroup = (filterGroup === 'ALL' || s.group === filterGroup);
+                const matchSearch = (s.lastName.toLowerCase().includes(search) || s.firstName.toLowerCase().includes(search));
+                return matchGroup && matchSearch;
             });
+
+            filtered.sort((a, b) => a.lastName.localeCompare(b.lastName, 'uk'));
 
             document.getElementById('students-count-tag').innerText = filtered.length;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400 font-medium">Учнів не знайдено</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="px-5 py-8 text-center text-slate-400 font-medium text-xs">Учнів не знайдено</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filtered.map((st, index) => `
+            tbody.innerHTML = filtered.map((s, index) => `
                 <tr class="hover:bg-slate-50/80 transition">
-                    <td class="px-5 py-3.5 text-slate-400 font-bold">${index + 1}</td>
-                    <td class="px-5 py-3.5 font-bold text-slate-800">${st.lastName} ${st.firstName}</td>
+                    <td class="px-5 py-3.5 text-slate-400 font-bold text-xs">${index + 1}</td>
+                    <td class="px-5 py-3.5 text-slate-900 font-bold">
+                        ${s.lastName} ${s.firstName}
+                    </td>
                     <td class="px-5 py-3.5">
-                        <span class="px-2.5 py-1 text-xs font-extrabold rounded-lg ${st.group === 'Група 1' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-indigo-50 text-indigo-700 border border-indigo-200'}">
-                            ${st.group}
+                        <span class="px-2.5 py-1 text-xs font-bold ${s.group === 'Група 1' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-purple-50 text-purple-700 border border-purple-200'} rounded-lg">
+                            ${s.group}
                         </span>
                     </td>
                     <td class="px-5 py-3.5 text-xs text-slate-500">
-                        <div>${st.phone || '-'}</div>
-                        <div class="text-[11px] text-slate-400">${st.email || ''}</div>
+                        <div><i class="fa-solid fa-phone text-slate-300 mr-1"></i> ${s.phone || '—'}</div>
+                        <div><i class="fa-solid fa-envelope text-slate-300 mr-1"></i> ${s.email || '—'}</div>
                     </td>
-                    <td class="px-5 py-3.5 text-right space-x-2">
-                        <button onclick="editStudent('${st.id}')" class="text-slate-400 hover:text-brand-600 transition p-1"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteStudent('${st.id}')" class="text-slate-400 hover:text-rose-600 transition p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    <td class="px-5 py-3.5 text-right space-x-1">
+                        <button onclick="editStudent('${s.id}')" class="p-2 text-slate-400 hover:text-brand-600 rounded-lg transition"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteStudent('${s.id}')" class="p-2 text-slate-400 hover:text-rose-600 rounded-lg transition"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -731,123 +797,112 @@
                     showToast("Дані учня оновлено");
                 }
             } else {
-                const newStudent = { id: Date.now().toString(), lastName, firstName, group, phone, email };
+                const newStudent = {
+                    id: Date.now().toString(),
+                    lastName, firstName, group, phone, email
+                };
                 students.push(newStudent);
-                showToast("Учня додано до класу");
+                showToast("Нового учня додано");
             }
 
-            saveAllData();
             cancelEditStudent();
-            renderStudentsList();
-            updateAttendanceSelectOptions();
+            saveData();
+            refreshAllUI();
         }
 
         function editStudent(id) {
-            const st = students.find(s => s.id === id);
-            if (!st) return;
-            document.getElementById('edit-student-id').value = st.id;
-            document.getElementById('student-lastname').value = st.lastName;
-            document.getElementById('student-firstname').value = st.firstName;
-            document.getElementById('student-group').value = st.group;
-            document.getElementById('student-phone').value = st.phone || '';
-            document.getElementById('student-email').value = st.email || '';
+            const s = students.find(item => item.id === id);
+            if (!s) return;
 
-            document.getElementById('save-student-btn').querySelector('span').innerText = 'Зберегти зміни';
+            document.getElementById('edit-student-id').value = s.id;
+            document.getElementById('student-lastname').value = s.lastName;
+            document.getElementById('student-firstname').value = s.firstName;
+            document.getElementById('student-group').value = s.group;
+            document.getElementById('student-phone').value = s.phone || '';
+            document.getElementById('student-email').value = s.email || '';
+
             document.getElementById('cancel-edit-student-btn').classList.remove('hidden');
+            document.getElementById('save-student-btn').querySelector('span').innerText = 'Зберегти зміни';
         }
 
         function cancelEditStudent() {
             document.getElementById('add-student-form').reset();
             document.getElementById('edit-student-id').value = '';
-            document.getElementById('save-student-btn').querySelector('span').innerText = 'Додати до класу';
             document.getElementById('cancel-edit-student-btn').classList.add('hidden');
+            document.getElementById('save-student-btn').querySelector('span').innerText = 'Додати до класу';
         }
 
         function deleteStudent(id) {
-            if (confirm("Видалити учня з класу?")) {
+            if (confirm("Ви дійсно бажаєте вилучити цього учня з журналу?")) {
                 students = students.filter(s => s.id !== id);
-                saveAllData();
-                renderStudentsList();
-                updateAttendanceSelectOptions();
-                showToast("Учня видалено");
+                saveData();
+                refreshAllUI();
+                showToast("Учня вилучено");
             }
         }
 
-        // === РОЗКЛАД УРОКІВ ===
+        // === ВКЛАДКА: РОЗКЛАД УРОКІВ ===
         function renderDayTabs() {
-            const container = document.getElementById('day-tabs');
-            container.innerHTML = Object.keys(DAYS_MAP).map(dayKey => `
-                <button onclick="selectDay('${dayKey}')" id="day-tab-${dayKey}" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap ${dayKey === selectedDay ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
-                    <span>${DAYS_MAP[dayKey]}</span>
+            const tabsContainer = document.getElementById('day-tabs');
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            tabsContainer.innerHTML = days.map(day => `
+                <button onclick="selectDay('${day}')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${selectedDay === day ? 'bg-slate-900 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}">
+                    ${DAYS_MAP[day]}
                 </button>
             `).join('');
         }
 
-        function selectDay(dayKey) {
-            selectedDay = dayKey;
+        function selectDay(day) {
+            selectedDay = day;
             renderDayTabs();
+            document.getElementById('selected-day-title').innerHTML = `<i class="fa-solid fa-calendar-day text-brand-600"></i> ${DAYS_MAP[day]}`;
             renderSchedule();
         }
 
         function renderSchedule() {
-            document.getElementById('selected-day-title').innerHTML = `<i class="fa-solid fa-calendar-day text-brand-600"></i> ${DAYS_MAP[selectedDay]}`;
-            const list = schedule[selectedDay] || [];
-            document.getElementById('lessons-count-badge').innerText = `${list.length} уроків`;
-
             const container = document.getElementById('schedule-lessons-list');
-            if (list.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-slate-400 font-medium">Уроків на цей день немає</div>`;
+            const dayLessons = schedule[selectedDay] || [];
+
+            document.getElementById('lessons-count-badge').innerText = `${dayLessons.length} уроків`;
+
+            if (dayLessons.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium text-xs border border-dashed border-slate-200 rounded-xl">На цей день розклад відсутній</div>`;
                 return;
             }
 
-            container.innerHTML = list.map((l, index) => `
-                <div class="p-4 rounded-xl border border-slate-200/80 hover:border-brand-200 transition bg-slate-50/50 flex items-center justify-between gap-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 font-black text-slate-700 text-xs flex items-center justify-center shadow-sm">
-                            ${index + 1}
-                        </div>
+            container.innerHTML = dayLessons.map((l, i) => `
+                <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-brand-200 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center space-x-3.5">
+                        <span class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-xs">${i + 1}</span>
                         <div>
                             <div class="flex items-center gap-2">
-                                <h4 class="font-bold text-slate-800 text-sm">${l.subject}</h4>
-                                <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-md ${l.groupTarget === 'ALL' ? 'bg-slate-200 text-slate-700' : 'bg-blue-100 text-blue-800'}">
+                                <h4 class="font-extrabold text-slate-900 text-sm">${l.subject}</h4>
+                                <span class="px-2 py-0.5 text-[10px] font-bold ${l.groupTarget === 'ALL' ? 'bg-slate-200 text-slate-700' : 'bg-blue-100 text-blue-800'} rounded-md">
                                     ${l.groupTarget === 'ALL' ? 'Весь клас' : l.groupTarget}
                                 </span>
-                                ${l.isMerged ? '<span class="px-2 py-0.5 text-[10px] font-extrabold bg-purple-100 text-purple-700 rounded-md"><i class="fa-solid fa-link text-[8px]"></i> Спарений</span>' : ''}
+                                ${l.isMerged ? `<span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 text-purple-700 rounded-md"><i class="fa-solid fa-link mr-1"></i> Спарений</span>` : ''}
                             </div>
-                            <p class="text-xs text-slate-500 font-medium mt-0.5">${l.time} • ${l.room || 'без кабінету'} • ${l.teacher || 'без вчителя'}</p>
+                            <div class="text-xs text-slate-500 mt-1 flex items-center gap-3">
+                                <span><i class="fa-regular fa-clock mr-1"></i> ${l.time}</span>
+                                <span><i class="fa-solid fa-location-dot mr-1"></i> ${l.room || 'не вказано'}</span>
+                                <span><i class="fa-solid fa-user-tie mr-1"></i> ${l.teacher || '—'}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-1">
-                        <button onclick="editLesson('${l.id}')" class="p-2 text-slate-400 hover:text-brand-600 transition"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteLesson('${l.id}')" class="p-2 text-slate-400 hover:text-rose-600 transition"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="flex items-center space-x-2 self-end sm:self-center">
+                        <button onclick="editLesson('${l.id}')" class="px-2.5 py-1.5 text-xs text-slate-600 hover:text-brand-600 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteLesson('${l.id}')" class="px-2.5 py-1.5 text-xs text-rose-600 hover:text-rose-700 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-rose-50"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
         function openAddLessonModal() {
-            document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-calendar-plus text-brand-300"></i> Додати урок в розклад`;
             document.getElementById('lesson-form').reset();
             document.getElementById('lesson-id').value = '';
+            document.getElementById('modal-title').innerText = "Додати урок в розклад";
             document.getElementById('lesson-day').value = selectedDay;
-            document.getElementById('lesson-modal').classList.remove('hidden');
-        }
-
-        function editLesson(id) {
-            const list = schedule[selectedDay] || [];
-            const les = list.find(l => l.id === id);
-            if (!les) return;
-
-            document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-brand-300"></i> Редагувати урок`;
-            document.getElementById('lesson-id').value = les.id;
-            document.getElementById('lesson-day').value = selectedDay;
-            document.getElementById('lesson-group-target').value = les.groupTarget;
-            document.getElementById('lesson-subject').value = les.subject;
-            document.getElementById('lesson-time').value = les.time;
-            document.getElementById('lesson-room').value = les.room || '';
-            document.getElementById('lesson-teacher').value = les.teacher || '';
-            document.getElementById('lesson-merged').checked = !!les.isMerged;
-
             document.getElementById('lesson-modal').classList.remove('hidden');
         }
 
@@ -855,70 +910,100 @@
             document.getElementById('lesson-modal').classList.add('hidden');
         }
 
+        function editLesson(id) {
+            const dayLessons = schedule[selectedDay] || [];
+            const l = dayLessons.find(item => item.id === id);
+            if (!l) return;
+
+            document.getElementById('lesson-id').value = l.id;
+            document.getElementById('lesson-day').value = selectedDay;
+            document.getElementById('lesson-group').value = l.groupTarget || 'ALL';
+            document.getElementById('lesson-subject').value = l.subject;
+            
+            const times = l.time ? l.time.split(' - ') : ['08:30', '09:15'];
+            document.getElementById('lesson-time-start').value = times[0] || '08:30';
+            document.getElementById('lesson-time-end').value = times[1] || '09:15';
+
+            document.getElementById('lesson-room').value = l.room || '';
+            document.getElementById('lesson-teacher').value = l.teacher || '';
+            document.getElementById('lesson-merged').checked = !!l.isMerged;
+
+            document.getElementById('modal-title').innerText = "Редагувати урок";
+            document.getElementById('lesson-modal').classList.remove('hidden');
+        }
+
         function handleSaveLesson(e) {
             e.preventDefault();
             const id = document.getElementById('lesson-id').value;
             const day = document.getElementById('lesson-day').value;
-            const groupTarget = document.getElementById('lesson-group-target').value;
+            const groupTarget = document.getElementById('lesson-group').value;
             const subject = document.getElementById('lesson-subject').value.trim();
-            const time = document.getElementById('lesson-time').value.trim();
+            const tStart = document.getElementById('lesson-time-start').value;
+            const tEnd = document.getElementById('lesson-time-end').value;
             const room = document.getElementById('lesson-room').value.trim();
             const teacher = document.getElementById('lesson-teacher').value.trim();
             const isMerged = document.getElementById('lesson-merged').checked;
+
+            const lessonObj = {
+                id: id || Date.now().toString(),
+                subject,
+                groupTarget,
+                time: `${tStart} - ${tEnd}`,
+                room,
+                teacher,
+                isMerged
+            };
 
             if (!schedule[day]) schedule[day] = [];
 
             if (id) {
                 const idx = schedule[day].findIndex(l => l.id === id);
-                if (idx !== -1) {
-                    schedule[day][idx] = { id, subject, groupTarget, time, room, teacher, isMerged };
-                }
+                if (idx !== -1) schedule[day][idx] = lessonObj;
             } else {
-                schedule[day].push({ id: Date.now().toString(), subject, groupTarget, time, room, teacher, isMerged });
+                schedule[day].push(lessonObj);
             }
 
-            saveAllData();
             closeLessonModal();
-            renderSchedule();
-            updateAttendanceSelectOptions();
+            saveData();
+            refreshAllUI();
             showToast("Розклад оновлено");
         }
 
         function deleteLesson(id) {
-            if (confirm("Видалити урок з розкладу?")) {
-                schedule[selectedDay] = (schedule[selectedDay] || []).filter(l => l.id !== id);
-                saveAllData();
-                renderSchedule();
-                updateAttendanceSelectOptions();
-                showToast("Урок видалено");
+            if (confirm("Видалити цей урок з розкладу?")) {
+                if (schedule[selectedDay]) {
+                    schedule[selectedDay] = schedule[selectedDay].filter(l => l.id !== id);
+                    saveData();
+                    refreshAllUI();
+                    showToast("Урок видалено");
+                }
             }
         }
 
-        // === ЖУРНАЛ ВІДВІДУВАНОСТІ ===
+        // === ВКЛАДКА: ЖУРНАЛ ВІДВІДУВАНОСТІ ===
         function getDayKeyFromDate(dateStr) {
             if (!dateStr) return 'Mon';
-            const date = new Date(dateStr);
-            const dayIdx = date.getDay();
+            const d = new Date(dateStr);
             const map = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            return map[dayIdx] || 'Mon';
+            const key = map[d.getDay()];
+            return key === 'Sun' ? 'Mon' : key;
         }
 
         function updateAttendanceSelectOptions() {
             const dateVal = document.getElementById('attendance-date').value;
             const dayKey = getDayKeyFromDate(dateVal);
-            const select = document.getElementById('attendance-lesson-select');
             const dayLessons = schedule[dayKey] || [];
+            const select = document.getElementById('attendance-lesson-select');
 
-            select.innerHTML = '';
             if (dayLessons.length === 0) {
-                select.innerHTML = `<option value="">Уроків не заплановано</option>`;
-                renderAttendanceList();
-                return;
+                select.innerHTML = `<option value="">(Немає уроків на цей день)</option>`;
+            } else {
+                select.innerHTML = dayLessons.map(l => `
+                    <option value="${l.id}">
+                        ${l.subject} (${l.time}) ${l.groupTarget !== 'ALL' ? '[' + l.groupTarget + ']' : ''}
+                    </option>
+                `).join('');
             }
-
-            select.innerHTML = dayLessons.map(l => `
-                <option value="${l.id}">${l.subject} (${l.time}) — ${l.groupTarget === 'ALL' ? 'Весь клас' : l.groupTarget}</option>
-            `).join('');
 
             onAttendanceLessonChange();
         }
@@ -930,173 +1015,189 @@
         function onAttendanceLessonChange() {
             const dateVal = document.getElementById('attendance-date').value;
             const dayKey = getDayKeyFromDate(dateVal);
-            const lessonId = document.getElementById('attendance-lesson-select').value;
             const dayLessons = schedule[dayKey] || [];
-            const les = dayLessons.find(l => l.id === lessonId);
+            const lessonId = document.getElementById('attendance-lesson-select').value;
+            const lesson = dayLessons.find(l => l.id === lessonId);
 
             const nameEl = document.getElementById('info-lesson-name');
-            const badgeEl = document.getElementById('info-group-badge');
-            const mergedEl = document.getElementById('info-merged-badge');
             const detailsEl = document.getElementById('info-lesson-details');
+            const groupBadge = document.getElementById('info-group-badge');
+            const mergedBadge = document.getElementById('info-merged-badge');
 
-            if (les) {
-                nameEl.innerText = les.subject;
-                badgeEl.innerText = les.groupTarget === 'ALL' ? 'Весь клас' : les.groupTarget;
-                detailsEl.innerText = `${les.time} • ${les.room || 'Без каб.'} • Вчитель: ${les.teacher || '-'}`;
-                if (les.isMerged) {
-                    mergedEl.classList.remove('hidden');
+            if (lesson) {
+                nameEl.innerText = lesson.subject;
+                detailsEl.innerText = `${lesson.time} | ${lesson.room || 'без кабінету'} | Вчитель: ${lesson.teacher || '—'}`;
+                groupBadge.innerText = lesson.groupTarget === 'ALL' ? 'Весь клас' : lesson.groupTarget;
+                if (lesson.isMerged) {
+                    mergedBadge.classList.remove('hidden');
                 } else {
-                    mergedEl.classList.add('hidden');
+                    mergedBadge.classList.add('hidden');
                 }
             } else {
-                nameEl.innerText = 'Урок не обрано';
-                badgeEl.innerText = 'Весь клас';
-                detailsEl.innerText = 'Оберіть урок для редагування відвідуваності';
-                mergedEl.classList.add('hidden');
+                nameEl.innerText = "Урок не обрано";
+                detailsEl.innerText = "Оберіть дата/урок для редагування";
+                groupBadge.innerText = "—";
+                mergedBadge.classList.add('hidden');
             }
 
             renderAttendanceList();
         }
 
         function renderAttendanceList() {
+            const container = document.getElementById('attendance-list-container');
             const dateVal = document.getElementById('attendance-date').value;
             const dayKey = getDayKeyFromDate(dateVal);
+            const dayLessons = schedule[dayKey] || [];
             const lessonId = document.getElementById('attendance-lesson-select').value;
-            const les = (schedule[dayKey] || []).find(l => l.id === lessonId);
+            const lesson = dayLessons.find(l => l.id === lessonId);
 
-            const container = document.getElementById('attendance-list-container');
-            if (!les) {
-                container.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium">Оберіть дійсний урок для виставлення відвідуваності</div>`;
-                updateStats([]);
+            if (!lesson) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium text-xs">Будь ласка, оберіть або додайте урок у розкладі для цієї дати</div>`;
+                updateAttendanceStats([]);
                 return;
             }
 
-            let filteredStudents = students;
-            if (les.groupTarget !== 'ALL') {
-                filteredStudents = students.filter(s => s.group === les.groupTarget);
-            }
+            // Фільтр за групою урока
+            let activeStudents = students.filter(s => {
+                if (lesson.groupTarget === 'ALL') return true;
+                return s.group === lesson.groupTarget;
+            });
 
-            document.getElementById('attendance-subtitle').innerText = `Відображається ${filteredStudents.length} учнів (${les.groupTarget === 'ALL' ? 'Весь клас' : les.groupTarget})`;
+            activeStudents.sort((a, b) => a.lastName.localeCompare(b.lastName, 'uk'));
 
-            const key = `${dateVal}_${lessonId}`;
-            const currentData = attendanceRecords[key] || {};
+            document.getElementById('attendance-subtitle').innerText = `Список учнів для: ${lesson.subject} (${lesson.groupTarget === 'ALL' ? 'Весь клас' : lesson.groupTarget})`;
 
-            if (filteredStudents.length === 0) {
-                container.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium">У цій групі немає учнів</div>`;
-                updateStats([]);
+            if (activeStudents.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 font-medium text-xs">У цій групі немає зареєстрованих учнів</div>`;
+                updateAttendanceStats([]);
                 return;
             }
 
-            container.innerHTML = filteredStudents.map((st, i) => {
-                const rec = currentData[st.id] || { status: 'P', grade: '', note: '' };
+            const recKeyPrefix = `${dateVal}_${lessonId}_`;
+
+            container.innerHTML = activeStudents.map((s, index) => {
+                const rec = attendanceRecords[recKeyPrefix + s.id] || { status: 'present', grade: '', note: '' };
                 return `
-                    <div class="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-50/50 transition">
-                        <div class="flex items-center space-x-3.5">
-                            <span class="w-7 text-xs font-bold text-slate-400">${i + 1}</span>
+                    <div class="p-4 sm:px-6 hover:bg-slate-50/80 transition flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs">${index + 1}</span>
                             <div>
-                                <h4 class="font-extrabold text-slate-800 text-sm">${st.lastName} ${st.firstName}</h4>
-                                <span class="text-[11px] font-bold text-slate-400">${st.group}</span>
+                                <h4 class="font-extrabold text-slate-900 text-sm">${s.lastName} ${s.firstName}</h4>
+                                <span class="text-[11px] text-slate-400">${s.group}</span>
                             </div>
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">
-                            <!-- Статуси (Кнопки) -->
-                            <div class="flex bg-slate-100 p-1 rounded-xl gap-1">
-                                <button onclick="setStudentStatus('${st.id}', 'P')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${rec.status === 'P' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Присутній</button>
-                                <button onclick="setStudentStatus('${st.id}', 'N')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${rec.status === 'N' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Н (Відсутній)</button>
-                                <button onclick="setStudentStatus('${st.id}', 'S')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${rec.status === 'S' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Спізнився</button>
-                                <button onclick="setStudentStatus('${st.id}', 'H')" class="px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${rec.status === 'H' ? 'bg-indigo-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Хворий</button>
+                            <!-- Кнопки статусів -->
+                            <div class="inline-flex p-1 bg-slate-100 rounded-xl space-x-1">
+                                <button onclick="setStudentStatus('${s.id}', 'present')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'present' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Присутній</button>
+                                <button onclick="setStudentStatus('${s.id}', 'absent')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'absent' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Н (Відсутній)</button>
+                                <button onclick="setStudentStatus('${s.id}', 'late')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'late' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Спізнився</button>
+                                <button onclick="setStudentStatus('${s.id}', 'sick')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'sick' ? 'bg-indigo-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Хворіє</button>
                             </div>
 
-                            <!-- Оцінка -->
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-[11px] font-bold text-slate-400 uppercase">Бал:</span>
-                                <input type="number" min="1" max="12" value="${rec.grade || ''}" onchange="setStudentGrade('${st.id}', this.value)" placeholder="1-12" class="w-16 bg-slate-50 border border-slate-200 text-center font-bold text-sm py-1.5 rounded-xl outline-none focus:ring-2 focus:ring-brand-500">
+                            <!-- Оцінка (1-12) -->
+                            <div class="flex items-center space-x-1">
+                                <span class="text-xs font-bold text-slate-400">Бал:</span>
+                                <input type="number" min="1" max="12" value="${rec.grade || ''}" onchange="setStudentGrade('${s.id}', this.value)" placeholder="1-12" class="w-14 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1 text-center font-bold text-sm text-brand-600 focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                             </div>
 
-                            <!-- Примітка -->
-                            <input type="text" value="${rec.note || ''}" onchange="setStudentNote('${st.id}', this.value)" placeholder="Примітка..." class="bg-slate-50 border border-slate-200 text-xs px-3 py-1.5 rounded-xl outline-none focus:ring-2 focus:ring-brand-500 w-32 sm:w-40">
+                            <!-- Коментар -->
+                            <input type="text" value="${rec.note || ''}" onchange="setStudentNote('${s.id}', this.value)" placeholder="Примітка..." class="w-36 sm:w-44 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs font-medium focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                     </div>
                 `;
             }).join('');
 
-            updateStats(filteredStudents.map(s => currentData[s.id]?.status || 'P'));
+            updateAttendanceStats(activeStudents);
+        }
+
+        function updateAttendanceStats(activeStudents) {
+            const dateVal = document.getElementById('attendance-date').value;
+            const lessonId = document.getElementById('attendance-lesson-select').value;
+            const recKeyPrefix = `${dateVal}_${lessonId}_`;
+
+            let present = 0, absent = 0, other = 0;
+
+            activeStudents.forEach(s => {
+                const rec = attendanceRecords[recKeyPrefix + s.id] || { status: 'present' };
+                if (rec.status === 'present') present++;
+                else if (rec.status === 'absent') absent++;
+                else other++;
+            });
+
+            document.getElementById('stat-total').innerText = activeStudents.length;
+            document.getElementById('stat-present').innerText = present;
+            document.getElementById('stat-absent').innerText = absent;
+            document.getElementById('stat-other').innerText = other;
         }
 
         function setStudentStatus(studentId, status) {
             const dateVal = document.getElementById('attendance-date').value;
             const lessonId = document.getElementById('attendance-lesson-select').value;
-            const key = `${dateVal}_${lessonId}`;
+            if (!lessonId) return;
 
+            const key = `${dateVal}_${lessonId}_${studentId}`;
             if (!attendanceRecords[key]) attendanceRecords[key] = {};
-            if (!attendanceRecords[key][studentId]) attendanceRecords[key][studentId] = { status: 'P', grade: '', note: '' };
+            attendanceRecords[key].status = status;
 
-            attendanceRecords[key][studentId].status = status;
-            saveAllData();
+            saveData();
             renderAttendanceList();
         }
 
         function setStudentGrade(studentId, grade) {
             const dateVal = document.getElementById('attendance-date').value;
             const lessonId = document.getElementById('attendance-lesson-select').value;
-            const key = `${dateVal}_${lessonId}`;
+            if (!lessonId) return;
 
-            if (!attendanceRecords[key]) attendanceRecords[key] = {};
-            if (!attendanceRecords[key][studentId]) attendanceRecords[key][studentId] = { status: 'P', grade: '', note: '' };
+            const key = `${dateVal}_${lessonId}_${studentId}`;
+            if (!attendanceRecords[key]) attendanceRecords[key] = { status: 'present' };
+            attendanceRecords[key].grade = grade;
 
-            attendanceRecords[key][studentId].grade = grade;
-            saveAllData();
+            saveData();
         }
 
         function setStudentNote(studentId, note) {
             const dateVal = document.getElementById('attendance-date').value;
             const lessonId = document.getElementById('attendance-lesson-select').value;
-            const key = `${dateVal}_${lessonId}`;
+            if (!lessonId) return;
 
-            if (!attendanceRecords[key]) attendanceRecords[key] = {};
-            if (!attendanceRecords[key][studentId]) attendanceRecords[key][studentId] = { status: 'P', grade: '', note: '' };
+            const key = `${dateVal}_${lessonId}_${studentId}`;
+            if (!attendanceRecords[key]) attendanceRecords[key] = { status: 'present' };
+            attendanceRecords[key].note = note;
 
-            attendanceRecords[key][studentId].note = note;
-            saveAllData();
+            saveData();
         }
 
         function setAllAttendance(status) {
             const dateVal = document.getElementById('attendance-date').value;
             const dayKey = getDayKeyFromDate(dateVal);
+            const dayLessons = schedule[dayKey] || [];
             const lessonId = document.getElementById('attendance-lesson-select').value;
-            const les = (schedule[dayKey] || []).find(l => l.id === lessonId);
-            if (!les) return;
+            const lesson = dayLessons.find(l => l.id === lessonId);
 
-            let filteredStudents = students;
-            if (les.groupTarget !== 'ALL') {
-                filteredStudents = students.filter(s => s.group === les.groupTarget);
-            }
+            if (!lesson) return;
 
-            const key = `${dateVal}_${lessonId}`;
-            if (!attendanceRecords[key]) attendanceRecords[key] = {};
-
-            filteredStudents.forEach(st => {
-                if (!attendanceRecords[key][st.id]) attendanceRecords[key][st.id] = { status: 'P', grade: '', note: '' };
-                attendanceRecords[key][st.id].status = status === 'present' ? 'P' : 'N';
+            let activeStudents = students.filter(s => {
+                if (lesson.groupTarget === 'ALL') return true;
+                return s.group === lesson.groupTarget;
             });
 
-            saveAllData();
-            renderAttendanceList();
-            showToast("Всіх учнів відмічено");
-        }
+            activeStudents.forEach(s => {
+                const key = `${dateVal}_${lessonId}_${s.id}`;
+                if (!attendanceRecords[key]) attendanceRecords[key] = {};
+                attendanceRecords[key].status = status;
+            });
 
-        function updateStats(statuses) {
-            document.getElementById('stat-total').innerText = statuses.length;
-            document.getElementById('stat-present').innerText = statuses.filter(s => s === 'P').length;
-            document.getElementById('stat-absent').innerText = statuses.filter(s => s === 'N').length;
-            document.getElementById('stat-other').innerText = statuses.filter(s => s === 'S' || s === 'H').length;
+            saveData();
+            renderAttendanceList();
+            showToast("Всіх відмічено присутніми");
         }
 
         // === МОДАЛЬНЕ ВІКНО FIREBASE CONFIG ===
         function openFirebaseConfigModal() {
-            const existing = localStorage.getItem('eschool_firebase_config');
-            document.getElementById('firebase-config-input').value = existing || JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
+            const custom = localStorage.getItem('eschool_firebase_config');
+            document.getElementById('firebase-config-input').value = custom || JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
             document.getElementById('firebase-modal').classList.remove('hidden');
         }
 
@@ -1106,30 +1207,27 @@
 
         function saveFirebaseConfig() {
             const input = document.getElementById('firebase-config-input').value.trim();
-            if (!input) {
-                clearFirebaseConfig();
-                return;
-            }
-
-            try {
-                JSON.parse(input);
-                localStorage.setItem('eschool_firebase_config', input);
-                closeFirebaseConfigModal();
-                showToast("Налаштування Firebase збережено. Перезавантаження...");
-                setTimeout(() => window.location.reload(), 1000);
-            } catch(e) {
-                alert("Некоректний формат JSON configuration");
+            if (input) {
+                try {
+                    JSON.parse(input);
+                    localStorage.setItem('eschool_firebase_config', input);
+                    closeFirebaseConfigModal();
+                    showToast("Конфіг збережено! Перезавантаження...");
+                    setTimeout(() => location.reload(), 1000);
+                } catch (e) {
+                    alert("Помилка! Введений текст не є валидним JSON.");
+                }
             }
         }
 
         function clearFirebaseConfig() {
             localStorage.removeItem('eschool_firebase_config');
             closeFirebaseConfigModal();
-            showToast("Використовується конфігурація за замовчуванням");
-            setTimeout(() => window.location.reload(), 1000);
+            showToast("Firebase відключено. Перезавантаження...");
+            setTimeout(() => location.reload(), 1000);
         }
 
-        // === ТОАСТ ПОВІДОМЛЕННЯ ===
+        // === ДОПОМІЖНІ СПОВІЩЕННЯ (TOAST) ===
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = message;
