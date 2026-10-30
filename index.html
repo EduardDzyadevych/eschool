@@ -65,7 +65,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="font-extrabold text-base sm:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-brand-100">Єдина Школа</h1>
-                            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">PRO</span>
+                            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">AI PRO</span>
                         </div>
                         <p class="text-xs text-slate-300 hidden sm:block font-medium">Електронний класний журнал & розклад</p>
                     </div>
@@ -223,14 +223,19 @@
 
         <!-- ==================== ВКЛАДКА 2: РОЗКЛАД УРОКІВ ==================== -->
         <section id="section-schedule" class="space-y-6 hidden">
-            <!-- Верхня панель розкладу -->
+            <!-- Верхня панель розкладу з можливістю завантаження фото AI -->
             <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center space-x-2 overflow-x-auto custom-scrollbar pb-1 md:pb-0" id="day-tabs">
                     <!-- Перемикачі днів заповнюються JS -->
                 </div>
-                <button onclick="openAddLessonModal()" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 whitespace-nowrap">
-                    <i class="fa-solid fa-plus"></i> Додати урок
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="openAiScanModal()" class="bg-gradient-to-r from-purple-600 via-indigo-600 to-brand-600 hover:from-purple-700 hover:to-brand-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Сканувати розклад з фото (AI)
+                    </button>
+                    <button onclick="openAddLessonModal()" class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md flex items-center justify-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Додати урок
+                    </button>
+                </div>
             </div>
 
             <!-- Контейнер уроків обраного дня -->
@@ -338,6 +343,77 @@
         </section>
 
     </main>
+
+    <!-- МОДАЛЬНЕ ВІКНО: AI Зчитування розкладу з фото -->
+    <div id="ai-scan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-100 transform transition-all max-h-[90vh] flex flex-col">
+            <div class="p-5 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white flex items-center justify-between">
+                <h3 class="font-extrabold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Зчитування розкладу з зображення (Gemini AI)
+                </h3>
+                <button onclick="closeAiScanModal()" class="text-white/70 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-5 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Завантажте якісне фото чи скріншот розкладу уроків (рукописного або друкованого). Штучний інтелект автоматично розпізнає назви предметів, дні тижня, час, вчителів та кабінети.
+                </p>
+
+                <!-- Зона завантаження зображення -->
+                <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition cursor-pointer relative" onclick="document.getElementById('schedule-photo-input').click()">
+                    <input type="file" id="schedule-photo-input" accept="image/*" class="hidden" onchange="handleImageSelection(event)">
+                    
+                    <div id="upload-placeholder" class="space-y-2">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 mx-auto flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-file-image"></i>
+                        </div>
+                        <div class="text-sm font-bold text-slate-700">Натисніть для вибору фотографії розкладу</div>
+                        <p class="text-[11px] text-slate-400">Підтримуються формати PNG, JPG, WEBP</p>
+                    </div>
+
+                    <div id="upload-preview-container" class="hidden relative">
+                        <img id="upload-preview-img" class="max-h-56 mx-auto rounded-xl shadow-md border border-slate-200 object-contain" src="" alt="Прев'ю розкладу">
+                        <button onclick="event.stopPropagation(); clearImageSelection()" class="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shadow-md">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Статус процесу розпізнавання -->
+                <div id="ai-loading-status" class="hidden p-4 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center gap-3">
+                    <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs font-bold text-indigo-900" id="ai-status-text">Аналізуємо зображення за допомогою AI Gemini...</span>
+                </div>
+
+                <!-- Попередній перегляд розпізнаного результату -->
+                <div id="ai-results-preview" class="hidden space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700">Розпізнані уроки:</span>
+                        <span id="ai-found-count" class="text-[11px] font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">0 розпізнано</span>
+                    </div>
+                    <div id="ai-parsed-lessons-list" class="max-h-48 overflow-y-auto custom-scrollbar border border-slate-200 rounded-xl divide-y divide-slate-100 text-xs">
+                        <!-- Динамічний список розпізнаного -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+                <button type="button" onclick="closeAiScanModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition">
+                    Скасувати
+                </button>
+                <div class="flex gap-2">
+                    <button type="button" id="btn-process-ai" onclick="processScheduleImageWithGemini()" disabled class="px-5 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold transition shadow-md shadow-purple-500/20 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Розпізнати розклад
+                    </button>
+                    <button type="button" id="btn-apply-ai" onclick="applyAiSchedule()" class="hidden px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-emerald-500/20 flex items-center gap-2">
+                        <i class="fa-solid fa-check"></i> Застосувати в розклад
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- МОДАЛЬНЕ ВІКНО: Додавання / Редагування уроку -->
     <div id="lesson-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
@@ -552,6 +628,10 @@
         let currentTab = 'attendance';
         let selectedDay = 'Mon';
 
+        // Тимчасове сховище для розпізнаного AI розкладу
+        let currentSelectedBase64Image = null;
+        let parsedAiScheduleData = null;
+
         // Прив'язка до window для HTML-подій
         window.switchTab = switchTab;
         window.resetToDemoData = resetToDemoData;
@@ -578,6 +658,14 @@
         window.closeFirebaseConfigModal = closeFirebaseConfigModal;
         window.saveFirebaseConfig = saveFirebaseConfig;
         window.clearFirebaseConfig = clearFirebaseConfig;
+
+        // AI Фото розкладу
+        window.openAiScanModal = openAiScanModal;
+        window.closeAiScanModal = closeAiScanModal;
+        window.handleImageSelection = handleImageSelection;
+        window.clearImageSelection = clearImageSelection;
+        window.processScheduleImageWithGemini = processScheduleImageWithGemini;
+        window.applyAiSchedule = applyAiSchedule;
 
         // === ІНІЦІАЛІЗАЦІЯ ===
         window.onload = async function() {
@@ -727,6 +815,214 @@
             renderSchedule();
             updateAttendanceSelectOptions();
             renderAttendanceList();
+        }
+
+        // === AI ЗЧИТУВАННЯ РОЗКЛАДУ З ФОТО (GEMINI VISION) ===
+        function openAiScanModal() {
+            clearImageSelection();
+            document.getElementById('ai-scan-modal').classList.remove('hidden');
+        }
+
+        function closeAiScanModal() {
+            document.getElementById('ai-scan-modal').classList.add('hidden');
+        }
+
+        function handleImageSelection(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert("Будь ласка, завантажте зображення (JPEG, PNG, WEBP)");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result;
+                currentSelectedBase64Image = base64Data;
+
+                document.getElementById('upload-preview-img').src = base64Data;
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                document.getElementById('upload-preview-container').classList.remove('hidden');
+
+                document.getElementById('btn-process-ai').disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearImageSelection() {
+            currentSelectedBase64Image = null;
+            parsedAiScheduleData = null;
+            document.getElementById('schedule-photo-input').value = '';
+            document.getElementById('upload-placeholder').classList.remove('hidden');
+            document.getElementById('upload-preview-container').classList.add('hidden');
+            document.getElementById('upload-preview-img').src = '';
+            
+            document.getElementById('btn-process-ai').disabled = true;
+            document.getElementById('btn-process-ai').classList.remove('hidden');
+            document.getElementById('btn-apply-ai').classList.add('hidden');
+            document.getElementById('ai-loading-status').classList.add('hidden');
+            document.getElementById('ai-results-preview').classList.add('hidden');
+        }
+
+        async function processScheduleImageWithGemini() {
+            if (!currentSelectedBase64Image) return;
+
+            document.getElementById('ai-loading-status').classList.remove('hidden');
+            document.getElementById('btn-process-ai').disabled = true;
+            document.getElementById('ai-results-preview').classList.add('hidden');
+
+            const base64Clean = currentSelectedBase64Image.split(',')[1];
+            const mimeType = currentSelectedBase64Image.split(';')[0].split(':')[1] || 'image/png';
+
+            const promptText = `Проаналізуй це зображення розкладу уроків та поверни відформатований JSON із уроками. 
+Структура відповіді має бути STRICT JSON:
+{
+  "Mon": [{"subject": "Алгебра", "startTime": "08:30", "endTime": "09:15", "room": "204", "teacher": "Іванова", "groupTarget": "ALL"}],
+  "Tue": [...],
+  "Wed": [...],
+  "Thu": [...],
+  "Fri": [...],
+  "Sat": [...]
+}
+Правила:
+1. Ключі днів: "Mon" (Понеділок), "Tue" (Вівторок), "Wed" (Середа), "Thu" (Четвер), "Fri" (П'ятниця), "Sat" (Субота).
+2. Якщо час не вказано чітко, постав орієнтовний стандартний за порядком (напр. 1 урок: 08:30-09:15, 2: 09:25-10:10, 3: 10:25-11:10, 4: 11:20-12:05).
+3. groupTarget має значення: "ALL" (якщо для всього класу), або "Група 1" / "Група 2" (якщо вказано підгрупу).
+4. Збережи назви предметів українською мовою.`;
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [
+                            { text: promptText },
+                            {
+                                inlineData: {
+                                    mimeType: mimeType,
+                                    data: base64Clean
+                                }
+                            }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            let attempts = 0;
+            const maxAttempts = 3;
+            let success = false;
+
+            while (attempts < maxAttempts && !success) {
+                try {
+                    attempts++;
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (jsonText) {
+                        parsedAiScheduleData = JSON.parse(jsonText);
+                        renderParsedAiResults(parsedAiScheduleData);
+                        success = true;
+                    }
+                } catch (err) {
+                    console.warn(`Спроба ${attempts} не вдалася:`, err);
+                    if (attempts < maxAttempts) {
+                        await new Promise(r => setTimeout(r, attempts * 1000));
+                    }
+                }
+            }
+
+            document.getElementById('ai-loading-status').classList.add('hidden');
+
+            if (!success) {
+                alert("Не вдалося розпізнати розклад. Перевірте якість зображення або спробуйте інше фото.");
+                document.getElementById('btn-process-ai').disabled = false;
+            }
+        }
+
+        function renderParsedAiResults(aiData) {
+            const listContainer = document.getElementById('ai-parsed-lessons-list');
+            listContainer.innerHTML = '';
+
+            let totalFound = 0;
+            const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            daysOrder.forEach(dayKey => {
+                const dayLessons = aiData[dayKey] || [];
+                if (dayLessons.length > 0) {
+                    totalFound += dayLessons.length;
+                    
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = "p-2 bg-slate-100 font-bold text-slate-800 flex justify-between";
+                    dayHeader.innerHTML = `<span>${DAYS_MAP[dayKey]}</span><span class="text-slate-500 font-normal">${dayLessons.length} уроків</span>`;
+                    listContainer.appendChild(dayHeader);
+
+                    dayLessons.forEach(l => {
+                        const row = document.createElement('div');
+                        row.className = "p-2 pl-4 flex items-center justify-between hover:bg-slate-50";
+                        row.innerHTML = `
+                            <div>
+                                <span class="font-bold text-slate-900">${l.subject}</span>
+                                <span class="text-slate-500 ml-2">(${l.startTime || '08:30'} - ${l.endTime || '09:15'})</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400">
+                                ${l.room ? 'каб. ' + l.room : ''} ${l.teacher || ''}
+                            </div>
+                        `;
+                        listContainer.appendChild(row);
+                    });
+                }
+            });
+
+            document.getElementById('ai-found-count').innerText = `${totalFound} уроків знайдено`;
+            document.getElementById('ai-results-preview').classList.remove('hidden');
+
+            document.getElementById('btn-process-ai').classList.add('hidden');
+            document.getElementById('btn-apply-ai').classList.remove('hidden');
+        }
+
+        function applyAiSchedule() {
+            if (!parsedAiScheduleData) return;
+
+            const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            daysOrder.forEach(dayKey => {
+                const aiLessons = parsedAiScheduleData[dayKey] || [];
+                if (aiLessons.length > 0) {
+                    schedule[dayKey] = aiLessons.map((l, index) => {
+                        const startTime = l.startTime || '08:30';
+                        const endTime = l.endTime || '09:15';
+                        return {
+                            id: `ai_${dayKey}_${Date.now()}_${index}`,
+                            subject: l.subject || 'Предмет',
+                            groupTarget: l.groupTarget || 'ALL',
+                            time: `${startTime} - ${endTime}`,
+                            room: l.room ? `каб. ${l.room}` : '',
+                            teacher: l.teacher || ''
+                        };
+                    });
+                }
+            });
+
+            saveData();
+            refreshAllUI();
+            closeAiScanModal();
+            showToast("Розклад успішно завантажено та розпізнано!");
         }
 
         // === НАВІГАЦІЯ ===
