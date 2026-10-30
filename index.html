@@ -65,7 +65,7 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <h1 class="font-extrabold text-base sm:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-brand-100">Єдина Школа</h1>
-                            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">AI PRO</span>
+                            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full">PRO</span>
                         </div>
                         <p class="text-xs text-slate-300 hidden sm:block font-medium">Електронний класний журнал & розклад</p>
                     </div>
@@ -88,7 +88,7 @@
                     </button>
                     <button onclick="resetToDemoData()" class="px-3.5 py-2 text-xs font-semibold bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl transition border border-white/15 backdrop-blur-md flex items-center gap-2 shadow-inner">
                         <i class="fa-solid fa-rotate-right text-brand-300"></i>
-                        <span class="hidden sm:inline">Скинути</span>
+                        <span class="hidden sm:inline">Скинути розклад</span>
                     </button>
                 </div>
             </div>
@@ -223,16 +223,13 @@
 
         <!-- ==================== ВКЛАДКА 2: РОЗКЛАД УРОКІВ ==================== -->
         <section id="section-schedule" class="space-y-6 hidden">
-            <!-- Верхня панель розкладу з можливістю завантаження фото AI -->
+            <!-- Верхня панель розкладу -->
             <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center space-x-2 overflow-x-auto custom-scrollbar pb-1 md:pb-0" id="day-tabs">
                     <!-- Перемикачі днів заповнюються JS -->
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="openAiScanModal()" class="bg-gradient-to-r from-purple-600 via-indigo-600 to-brand-600 hover:from-purple-700 hover:to-brand-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Сканувати розклад з фото (AI)
-                    </button>
-                    <button onclick="openAddLessonModal()" class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md flex items-center justify-center gap-2 whitespace-nowrap">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button onclick="openAddLessonModal()" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 whitespace-nowrap">
                         <i class="fa-solid fa-plus"></i> Додати урок
                     </button>
                 </div>
@@ -343,77 +340,6 @@
         </section>
 
     </main>
-
-    <!-- МОДАЛЬНЕ ВІКНО: AI Зчитування розкладу з фото -->
-    <div id="ai-scan-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-100 transform transition-all max-h-[90vh] flex flex-col">
-            <div class="p-5 bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 text-white flex items-center justify-between">
-                <h3 class="font-extrabold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Зчитування розкладу з зображення (Gemini AI)
-                </h3>
-                <button onclick="closeAiScanModal()" class="text-white/70 hover:text-white transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <div class="p-5 space-y-4 overflow-y-auto custom-scrollbar flex-1">
-                <p class="text-xs text-slate-600 leading-relaxed">
-                    Завантажте якісне фото чи скріншот розкладу уроків (рукописного або друкованого). Штучний інтелект автоматично розпізнає назви предметів, дні тижня, час, вчителів та кабінети.
-                </p>
-
-                <!-- Зона завантаження зображення -->
-                <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition cursor-pointer relative" onclick="document.getElementById('schedule-photo-input').click()">
-                    <input type="file" id="schedule-photo-input" accept="image/*" class="hidden" onchange="handleImageSelection(event)">
-                    
-                    <div id="upload-placeholder" class="space-y-2">
-                        <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 mx-auto flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-file-image"></i>
-                        </div>
-                        <div class="text-sm font-bold text-slate-700">Натисніть для вибору фотографії розкладу</div>
-                        <p class="text-[11px] text-slate-400">Підтримуються формати PNG, JPG, WEBP</p>
-                    </div>
-
-                    <div id="upload-preview-container" class="hidden relative">
-                        <img id="upload-preview-img" class="max-h-56 mx-auto rounded-xl shadow-md border border-slate-200 object-contain" src="" alt="Прев'ю розкладу">
-                        <button onclick="event.stopPropagation(); clearImageSelection()" class="absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs shadow-md">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Статус процесу розпізнавання -->
-                <div id="ai-loading-status" class="hidden p-4 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center gap-3">
-                    <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                    <span class="text-xs font-bold text-indigo-900" id="ai-status-text">Аналізуємо зображення за допомогою AI Gemini...</span>
-                </div>
-
-                <!-- Попередній перегляд розпізнаного результату -->
-                <div id="ai-results-preview" class="hidden space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-700">Розпізнані уроки:</span>
-                        <span id="ai-found-count" class="text-[11px] font-extrabold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">0 розпізнано</span>
-                    </div>
-                    <div id="ai-parsed-lessons-list" class="max-h-48 overflow-y-auto custom-scrollbar border border-slate-200 rounded-xl divide-y divide-slate-100 text-xs">
-                        <!-- Динамічний список розпізнаного -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-                <button type="button" onclick="closeAiScanModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition">
-                    Скасувати
-                </button>
-                <div class="flex gap-2">
-                    <button type="button" id="btn-process-ai" onclick="processScheduleImageWithGemini()" disabled class="px-5 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold transition shadow-md shadow-purple-500/20 flex items-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Розпізнати розклад
-                    </button>
-                    <button type="button" id="btn-apply-ai" onclick="applyAiSchedule()" class="hidden px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md shadow-emerald-500/20 flex items-center gap-2">
-                        <i class="fa-solid fa-check"></i> Застосувати в розклад
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- МОДАЛЬНЕ ВІКНО: Додавання / Редагування уроку -->
     <div id="lesson-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
@@ -559,7 +485,7 @@
         let isCloudEnabled = false;
         const APP_ID = 'eschool_main_v1';
 
-        // Ваша конфігурація Firebase eschool-9520b
+        // Конфігурація Firebase
         const DEFAULT_FIREBASE_CONFIG = {
             apiKey: "AIzaSyBihb3Wnowa-OoU6tuesFqRpzJujoOCK20",
             authDomain: "eschool-9520b.firebaseapp.com",
@@ -570,7 +496,6 @@
             measurementId: "G-VMWNZ3PM50"
         };
 
-        // === ПОЧАТКОВІ ДЕМО-ДАНИ ===
         const DEMO_STUDENTS = [
             { id: '1', lastName: 'Бондаренко', firstName: 'Артем', group: 'Група 1', phone: '+380971112233', email: 'bond@ukr.net' },
             { id: '2', lastName: 'Василенко', firstName: 'Марія', group: 'Група 1', phone: '+380952223344', email: 'masha@gmail.com' },
@@ -582,32 +507,59 @@
             { id: '8', lastName: 'Шевченко', firstName: 'Вікторія', group: 'Група 2', phone: '+380508889900', email: 'vika@gmail.com' }
         ];
 
-        const DEMO_SCHEDULE = {
+        // Точний розклад для 11-А класу з фото УФМЛ КНУ
+        const REAL_SCHEDULE_11A = {
             'Mon': [
-                { id: 'm1', subject: 'Алгебра', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.' },
-                { id: 'm2', subject: 'Англійська мова', groupTarget: 'Група 1', time: '09:25 - 10:10', room: 'каб. 102', teacher: 'Петренко Н.В.' },
-                { id: 'm3', subject: 'Інформатика', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 308', teacher: 'Гриценко Д.В.' },
-                { id: 'm4', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:25 - 11:10', room: 'Спортзал', teacher: 'Ковальчук В.П.' }
+                { id: 'm1_1', subject: 'Алгебра', groupTarget: 'Група 1', time: '08:30 - 09:15', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'm1_2', subject: 'Науковий практикум', groupTarget: 'Група 2', time: '08:30 - 09:15', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
+                { id: 'm2_1', subject: 'Науковий практикум', groupTarget: 'Група 1', time: '09:20 - 10:05', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
+                { id: 'm2_2', subject: 'Алгебра', groupTarget: 'Група 2', time: '09:20 - 10:05', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'm3', subject: 'Алгебра', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'm5_1', subject: 'Українська мова', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 323', teacher: 'Арська Ю.М.' },
+                { id: 'm5_2', subject: 'Українська мова', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 320', teacher: 'Тітарець С.С.' },
+                { id: 'm7_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '14:05 - 14:50', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
+                { id: 'm7_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '14:05 - 14:50', room: 'каб. 210', teacher: 'Чумакова О.О.' }
             ],
             'Tue': [
-                { id: 't1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.' },
-                { id: 't2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 401', teacher: 'Сміт Т.О.' },
-                { id: 't3', subject: 'Фізика', groupTarget: 'ALL', time: '10:25 - 11:10', room: 'каб. 310', teacher: 'Захаров С.М.' }
+                { id: 't1', subject: 'Хімія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 302', teacher: 'Копа І.Д.' },
+                { id: 't3', subject: 'Алгебра', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 't5_1', subject: 'Інформаційні технології', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 103', teacher: 'Бодрик О.О.' },
+                { id: 't5_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 210', teacher: 'Чумакова О.О.' },
+                { id: 't6_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '13:10 - 13:55', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
+                { id: 't6_2', subject: 'Інформаційні технології', groupTarget: 'Група 2', time: '13:10 - 13:55', room: 'каб. 105', teacher: 'Мельников Ю.О.' }
             ],
             'Wed': [
-                { id: 'w1', subject: 'Біологія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 108', teacher: 'Мороз Л.А.' },
-                { id: 'w2', subject: 'Хімія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 109', teacher: 'Павленко К.В.' },
-                { id: 'w3', subject: 'Інформатика (Практика)', groupTarget: 'Група 1', time: '10:25 - 11:10', room: 'каб. 308', teacher: 'Гриценко Д.В.' }
+                { id: 'w1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'w3_1', subject: 'Інформатика', groupTarget: 'Група 1', time: '10:35 - 11:20', room: 'каб. 103', teacher: 'Бодрик О.О.' },
+                { id: 'w3_2', subject: 'Інформатика', groupTarget: 'Група 2', time: '10:35 - 11:20', room: 'каб. 105', teacher: 'Мельников Ю.О.' },
+                { id: 'w5', subject: 'Фізика', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'w7', subject: 'Історія України', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 319', teacher: 'Карнаух А.О.' }
             ],
             'Thu': [
-                { id: 'th1', subject: 'Українська література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 102', teacher: 'Петренко Н.В.' },
-                { id: 'th2', subject: 'Географія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 215', teacher: 'Ткаченко Ю.В.' }
+                { id: 'th1', subject: 'Фізика', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'th3', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
+                { id: 'th4', subject: 'Алгебра', groupTarget: 'ALL', time: '11:25 - 12:10', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'th5', subject: 'Українська література', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 321', teacher: 'Порало Н.Д.' },
+                { id: 'th7', subject: 'Географія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 318', teacher: 'Мельник-Мірзоян А.Л.' }
             ],
             'Fri': [
-                { id: 'f1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 103', teacher: 'Романова Е.Б.' },
-                { id: 'f2', subject: 'Мистецтво', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 201', teacher: 'Лисенко М.К.' }
+                { id: 'f1', subject: 'Історія України', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 319', teacher: 'Карнаух А.О.' },
+                { id: 'f2', subject: 'Фізична культура', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
+                { id: 'f3_1', subject: 'Геометрія', groupTarget: 'Група 1', time: '10:35 - 11:20', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'f3_2', subject: 'Фізика', groupTarget: 'Група 2', time: '10:35 - 11:20', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'f5_1', subject: 'Фізика', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'f5_2', subject: 'Геометрія', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'f7_1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 221', teacher: 'Меньша С.Г.' },
+                { id: 'f7_2', subject: 'Астрономія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 217', teacher: 'Пономаренко В.О.' }
             ],
-            'Sat': []
+            'Sat': [
+                { id: 's1_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '08:30 - 09:15', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
+                { id: 's1_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '08:30 - 09:15', room: 'каб. 210', teacher: 'Чумакова О.О.' },
+                { id: 's2', subject: 'Всесвітня історія', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'каб. 319', teacher: 'Карнаух А.О.' },
+                { id: 's3', subject: 'Біологія і екологія', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 301', teacher: 'Калмикова О.О.' },
+                { id: 's4', subject: 'Фізична культура', groupTarget: 'ALL', time: '11:25 - 12:10', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
+                { id: 's5', subject: 'Захист України', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 101', teacher: 'Андрієвський А.П.' }
+            ]
         };
 
         const DAYS_MAP = {
@@ -619,7 +571,6 @@
             'Sat': 'Субота'
         };
 
-        // === СТАН ДОДАТКУ (STATE) ===
         let students = [];
         let schedule = {};
         let attendanceRecords = {};
@@ -628,11 +579,6 @@
         let currentTab = 'attendance';
         let selectedDay = 'Mon';
 
-        // Тимчасове сховище для розпізнаного AI розкладу
-        let currentSelectedBase64Image = null;
-        let parsedAiScheduleData = null;
-
-        // Прив'язка до window для HTML-подій
         window.switchTab = switchTab;
         window.resetToDemoData = resetToDemoData;
         window.handleAddStudent = handleAddStudent;
@@ -659,15 +605,6 @@
         window.saveFirebaseConfig = saveFirebaseConfig;
         window.clearFirebaseConfig = clearFirebaseConfig;
 
-        // AI Фото розкладу
-        window.openAiScanModal = openAiScanModal;
-        window.closeAiScanModal = closeAiScanModal;
-        window.handleImageSelection = handleImageSelection;
-        window.clearImageSelection = clearImageSelection;
-        window.processScheduleImageWithGemini = processScheduleImageWithGemini;
-        window.applyAiSchedule = applyAiSchedule;
-
-        // === ІНІЦІАЛІЗАЦІЯ ===
         window.onload = async function() {
             const today = new Date();
             document.getElementById('current-date').innerText = today.toLocaleDateString('uk-UA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -691,7 +628,6 @@
             updateAttendanceSelectOptions();
         };
 
-        // === FIREBASE ІНІЦІАЛІЗАЦІЯ ===
         async function initFirebaseIfConfigured() {
             const customConfig = localStorage.getItem('eschool_firebase_config');
             let configToUse = DEFAULT_FIREBASE_CONFIG;
@@ -745,7 +681,7 @@
                 if (snapshot.exists()) {
                     const data = snapshot.data();
                     students = data.students || DEMO_STUDENTS;
-                    schedule = data.schedule || DEMO_SCHEDULE;
+                    schedule = data.schedule || REAL_SCHEDULE_11A;
                     attendanceRecords = data.attendanceRecords || {};
                     lessonNotes = data.lessonNotes || {};
                     refreshAllUI();
@@ -753,7 +689,7 @@
                     saveData();
                 }
             }, (error) => {
-                console.warn("Помилка слухача Firebase, перехід на localData", error);
+                console.warn("Помилка слухача Firebase", error);
                 isCloudEnabled = false;
                 updateCloudStatusUI(false, 'Локально');
                 loadLocalData();
@@ -786,7 +722,7 @@
             const localNotes = localStorage.getItem('eschool_notes');
 
             students = localS ? JSON.parse(localS) : JSON.parse(JSON.stringify(DEMO_STUDENTS));
-            schedule = localSch ? JSON.parse(localSch) : JSON.parse(JSON.stringify(DEMO_SCHEDULE));
+            schedule = localSch ? JSON.parse(localSch) : JSON.parse(JSON.stringify(REAL_SCHEDULE_11A));
             attendanceRecords = localAtt ? JSON.parse(localAtt) : {};
             lessonNotes = localNotes ? JSON.parse(localNotes) : {};
             refreshAllUI();
@@ -801,12 +737,12 @@
 
         function resetToDemoData() {
             students = JSON.parse(JSON.stringify(DEMO_STUDENTS));
-            schedule = JSON.parse(JSON.stringify(DEMO_SCHEDULE));
+            schedule = JSON.parse(JSON.stringify(REAL_SCHEDULE_11A));
             attendanceRecords = {};
             lessonNotes = {};
             saveData();
             refreshAllUI();
-            showToast("Дані успішно скинуто до демо-версії");
+            showToast("Розклад 11-А класу успішно оновлено!");
         }
 
         function refreshAllUI() {
@@ -817,215 +753,6 @@
             renderAttendanceList();
         }
 
-        // === AI ЗЧИТУВАННЯ РОЗКЛАДУ З ФОТО (GEMINI VISION) ===
-        function openAiScanModal() {
-            clearImageSelection();
-            document.getElementById('ai-scan-modal').classList.remove('hidden');
-        }
-
-        function closeAiScanModal() {
-            document.getElementById('ai-scan-modal').classList.add('hidden');
-        }
-
-        function handleImageSelection(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                alert("Будь ласка, завантажте зображення (JPEG, PNG, WEBP)");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Data = e.target.result;
-                currentSelectedBase64Image = base64Data;
-
-                document.getElementById('upload-preview-img').src = base64Data;
-                document.getElementById('upload-placeholder').classList.add('hidden');
-                document.getElementById('upload-preview-container').classList.remove('hidden');
-
-                document.getElementById('btn-process-ai').disabled = false;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function clearImageSelection() {
-            currentSelectedBase64Image = null;
-            parsedAiScheduleData = null;
-            document.getElementById('schedule-photo-input').value = '';
-            document.getElementById('upload-placeholder').classList.remove('hidden');
-            document.getElementById('upload-preview-container').classList.add('hidden');
-            document.getElementById('upload-preview-img').src = '';
-            
-            document.getElementById('btn-process-ai').disabled = true;
-            document.getElementById('btn-process-ai').classList.remove('hidden');
-            document.getElementById('btn-apply-ai').classList.add('hidden');
-            document.getElementById('ai-loading-status').classList.add('hidden');
-            document.getElementById('ai-results-preview').classList.add('hidden');
-        }
-
-        async function processScheduleImageWithGemini() {
-            if (!currentSelectedBase64Image) return;
-
-            document.getElementById('ai-loading-status').classList.remove('hidden');
-            document.getElementById('btn-process-ai').disabled = true;
-            document.getElementById('ai-results-preview').classList.add('hidden');
-
-            const base64Clean = currentSelectedBase64Image.split(',')[1];
-            const mimeType = currentSelectedBase64Image.split(';')[0].split(':')[1] || 'image/png';
-
-            const promptText = `Проаналізуй це зображення розкладу уроків та поверни відформатований JSON із уроками. 
-Структура відповіді має бути STRICT JSON:
-{
-  "Mon": [{"subject": "Алгебра", "startTime": "08:30", "endTime": "09:15", "room": "204", "teacher": "Іванова", "groupTarget": "ALL"}],
-  "Tue": [...],
-  "Wed": [...],
-  "Thu": [...],
-  "Fri": [...],
-  "Sat": [...]
-}
-Правила:
-1. Ключі днів: "Mon" (Понеділок), "Tue" (Вівторок), "Wed" (Середа), "Thu" (Четвер), "Fri" (П'ятниця), "Sat" (Субота).
-2. Якщо час не вказано чітко, постав орієнтовний стандартний за порядком (напр. 1 урок: 08:30-09:15, 2: 09:25-10:10, 3: 10:25-11:10, 4: 11:20-12:05).
-3. groupTarget має значення: "ALL" (якщо для всього класу), або "Група 1" / "Група 2" (якщо вказано підгрупу).
-4. Збережи назви предметів українською мовою.`;
-
-            const apiKey = "";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-preview:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [
-                    {
-                        role: "user",
-                        parts: [
-                            { text: promptText },
-                            {
-                                inlineData: {
-                                    mimeType: mimeType,
-                                    data: base64Clean
-                                }
-                            }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
-            };
-
-            let attempts = 0;
-            const maxAttempts = 3;
-            let success = false;
-
-            while (attempts < maxAttempts && !success) {
-                try {
-                    attempts++;
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                    if (jsonText) {
-                        parsedAiScheduleData = JSON.parse(jsonText);
-                        renderParsedAiResults(parsedAiScheduleData);
-                        success = true;
-                    }
-                } catch (err) {
-                    console.warn(`Спроба ${attempts} не вдалася:`, err);
-                    if (attempts < maxAttempts) {
-                        await new Promise(r => setTimeout(r, attempts * 1000));
-                    }
-                }
-            }
-
-            document.getElementById('ai-loading-status').classList.add('hidden');
-
-            if (!success) {
-                alert("Не вдалося розпізнати розклад. Перевірте якість зображення або спробуйте інше фото.");
-                document.getElementById('btn-process-ai').disabled = false;
-            }
-        }
-
-        function renderParsedAiResults(aiData) {
-            const listContainer = document.getElementById('ai-parsed-lessons-list');
-            listContainer.innerHTML = '';
-
-            let totalFound = 0;
-            const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-            daysOrder.forEach(dayKey => {
-                const dayLessons = aiData[dayKey] || [];
-                if (dayLessons.length > 0) {
-                    totalFound += dayLessons.length;
-                    
-                    const dayHeader = document.createElement('div');
-                    dayHeader.className = "p-2 bg-slate-100 font-bold text-slate-800 flex justify-between";
-                    dayHeader.innerHTML = `<span>${DAYS_MAP[dayKey]}</span><span class="text-slate-500 font-normal">${dayLessons.length} уроків</span>`;
-                    listContainer.appendChild(dayHeader);
-
-                    dayLessons.forEach(l => {
-                        const row = document.createElement('div');
-                        row.className = "p-2 pl-4 flex items-center justify-between hover:bg-slate-50";
-                        row.innerHTML = `
-                            <div>
-                                <span class="font-bold text-slate-900">${l.subject}</span>
-                                <span class="text-slate-500 ml-2">(${l.startTime || '08:30'} - ${l.endTime || '09:15'})</span>
-                            </div>
-                            <div class="text-[10px] text-slate-400">
-                                ${l.room ? 'каб. ' + l.room : ''} ${l.teacher || ''}
-                            </div>
-                        `;
-                        listContainer.appendChild(row);
-                    });
-                }
-            });
-
-            document.getElementById('ai-found-count').innerText = `${totalFound} уроків знайдено`;
-            document.getElementById('ai-results-preview').classList.remove('hidden');
-
-            document.getElementById('btn-process-ai').classList.add('hidden');
-            document.getElementById('btn-apply-ai').classList.remove('hidden');
-        }
-
-        function applyAiSchedule() {
-            if (!parsedAiScheduleData) return;
-
-            const daysOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-            daysOrder.forEach(dayKey => {
-                const aiLessons = parsedAiScheduleData[dayKey] || [];
-                if (aiLessons.length > 0) {
-                    schedule[dayKey] = aiLessons.map((l, index) => {
-                        const startTime = l.startTime || '08:30';
-                        const endTime = l.endTime || '09:15';
-                        return {
-                            id: `ai_${dayKey}_${Date.now()}_${index}`,
-                            subject: l.subject || 'Предмет',
-                            groupTarget: l.groupTarget || 'ALL',
-                            time: `${startTime} - ${endTime}`,
-                            room: l.room ? `каб. ${l.room}` : '',
-                            teacher: l.teacher || ''
-                        };
-                    });
-                }
-            });
-
-            saveData();
-            refreshAllUI();
-            closeAiScanModal();
-            showToast("Розклад успішно завантажено та розпізнано!");
-        }
-
-        // === НАВІГАЦІЯ ===
         function switchTab(tab) {
             currentTab = tab;
             document.querySelectorAll('section[id^="section-"]').forEach(sec => sec.classList.add('hidden'));
@@ -1041,7 +768,6 @@
             }
         }
 
-        // === ВКЛАДКА: СПИСОК КЛАСУ ===
         function renderStudentsList() {
             const tbody = document.getElementById('students-table-body');
             const filterGroup = document.getElementById('student-group-filter').value;
@@ -1063,7 +789,7 @@
             }
 
             tbody.innerHTML = filtered.map((s, index) => `
-                <tr class="hover:bg-slate-50/80 transition">
+                <tr class="hover:bg-slate-50/85 transition">
                     <td class="px-5 py-3.5 text-slate-400 font-bold text-xs">${index + 1}</td>
                     <td class="px-5 py-3.5 text-slate-900 font-bold">
                         ${s.lastName} ${s.firstName}
@@ -1145,7 +871,6 @@
             }
         }
 
-        // === ВКЛАДКА: РОЗКЛАД УРОКІВ ===
         function renderDayTabs() {
             const tabsContainer = document.getElementById('day-tabs');
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -1293,7 +1018,6 @@
             }
         }
 
-        // === ВКЛАДКА: ЖУРНАЛ ВІДВІДУВАНОСТІ ===
         function getDayKeyFromDate(dateStr) {
             if (!dateStr) return 'Mon';
             const d = new Date(dateStr);
@@ -1381,7 +1105,6 @@
                 return;
             }
 
-            // Фільтр за групою урока
             let activeStudents = students.filter(s => {
                 if (lesson.groupTarget === 'ALL') return true;
                 return s.group === lesson.groupTarget;
@@ -1412,7 +1135,6 @@
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">
-                            <!-- Кнопки статусів -->
                             <div class="inline-flex p-1 bg-slate-100 rounded-xl space-x-1">
                                 <button onclick="setStudentStatus('${s.id}', 'present')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'present' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Присутній</button>
                                 <button onclick="setStudentStatus('${s.id}', 'absent')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'absent' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Н (Відсутній)</button>
@@ -1420,13 +1142,11 @@
                                 <button onclick="setStudentStatus('${s.id}', 'sick')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'sick' ? 'bg-indigo-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Хворіє</button>
                             </div>
 
-                            <!-- Оцінка (1-12) -->
                             <div class="flex items-center space-x-1">
                                 <span class="text-xs font-bold text-slate-400">Бал:</span>
                                 <input type="number" min="1" max="12" value="${rec.grade || ''}" onchange="setStudentGrade('${s.id}', this.value)" placeholder="1-12" class="w-14 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1 text-center font-bold text-sm text-brand-600 focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                             </div>
 
-                            <!-- Коментар -->
                             <input type="text" value="${rec.note || ''}" onchange="setStudentNote('${s.id}', this.value)" placeholder="Примітка до учня..." class="w-36 sm:w-44 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs font-medium focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                     </div>
@@ -1518,7 +1238,6 @@
             showToast("Всіх відмічено присутніми");
         }
 
-        // === МОДАЛЬНЕ ВІКНО FIREBASE CONFIG ===
         function openFirebaseConfigModal() {
             const custom = localStorage.getItem('eschool_firebase_config');
             document.getElementById('firebase-config-input').value = custom || JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
@@ -1539,7 +1258,7 @@
                     showToast("Конфіг збережено! Перезавантаження...");
                     setTimeout(() => location.reload(), 1000);
                 } catch (e) {
-                    alert("Помилка! Введений текст не є валидним JSON.");
+                    alert("Помилка! Введений текст не є валідним JSON.");
                 }
             }
         }
@@ -1551,7 +1270,6 @@
             setTimeout(() => location.reload(), 1000);
         }
 
-        // === ДОПОМІЖНІ СПОВІЩЕННЯ (TOAST) ===
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = message;
