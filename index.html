@@ -162,7 +162,7 @@
             </div>
 
             <!-- Віджети статистики -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Загалом</p>
@@ -188,15 +188,6 @@
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-base">
                         <i class="fa-solid fa-user-xmark"></i>
-                    </div>
-                </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-xs text-amber-500 font-bold uppercase tracking-wider">Спізнились/Хворі</p>
-                        <p id="stat-other" class="text-2xl font-black text-amber-600 mt-1">0</p>
-                    </div>
-                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base">
-                        <i class="fa-solid fa-clock"></i>
                     </div>
                 </div>
             </div>
@@ -230,7 +221,7 @@
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
                     <button onclick="openAddLessonModal()" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-700 hover:to-indigo-700 active:scale-95 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-plus"></i> Додати урок
+                        <i class="fa-solid fa-plus"></i> Додати урок / пару
                     </button>
                 </div>
             </div>
@@ -386,11 +377,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час початку</label>
-                        <input type="time" id="lesson-time-start" onchange="autoCalcEndTime()" required value="08:30" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="time" id="lesson-time-start" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час закінчення</label>
-                        <input type="time" id="lesson-time-end" required value="09:15" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="time" id="lesson-time-end" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                 </div>
 
@@ -497,60 +488,78 @@
         };
 
         const DEMO_STUDENTS = [
-            { id: '1', lastName: 'Бондаренко', firstName: 'Артем', group: 'Група 1', phone: '+380971112233', email: 'bond@ukr.net' },
-            { id: '2', lastName: 'Василенко', firstName: 'Марія', group: 'Група 1', phone: '+380952223344', email: 'masha@gmail.com' },
-            { id: '3', lastName: 'Григоренко', firstName: 'Максим', group: 'Група 2', phone: '+380633334455', email: 'max@ukr.net' },
-            { id: '4', lastName: 'Данилюк', firstName: 'Софія', group: 'Група 2', phone: '+380504445566', email: 'sofia@gmail.com' },
-            { id: '5', lastName: 'Коваленко', firstName: 'Олександр', group: 'Група 1', phone: '+380675556677', email: 'alex@ukr.net' },
-            { id: '6', lastName: 'Кравченко', firstName: 'Анна', group: 'Група 2', phone: '+380936667788', email: 'anya@gmail.com' },
-            { id: '7', lastName: 'Мельник', firstName: 'Дмитро', group: 'Група 1', phone: '+380987778899', email: 'dima@ukr.net' },
-            { id: '8', lastName: 'Шевченко', firstName: 'Вікторія', group: 'Група 2', phone: '+380508889900', email: 'vika@gmail.com' }
+            { id: '1', lastName: 'Арінархов', firstName: 'Микола', group: 'Група 1' },
+            { id: '2', lastName: 'Бабінцев', firstName: 'Олександр', group: 'Група 1' },
+            { id: '3', lastName: 'Дем\'яненко', firstName: 'Іван', group: 'Група 1' },
+            { id: '4', lastName: 'Дзядевич', firstName: 'Едуард', group: 'Група 1' },
+            { id: '5', lastName: 'Дзядевич', firstName: 'Кирил', group: 'Група 1' },
+            { id: '6', lastName: 'Костишен', firstName: 'Артем', group: 'Група 1' },
+            { id: '7', lastName: 'Крапивін', firstName: 'Артем', group: 'Група 1' },
+            { id: '8', lastName: 'Кхалуф', firstName: 'Анна', group: 'Група 1' },
+            { id: '9', lastName: 'Лобачевський', firstName: 'Платон', group: 'Група 1' },
+            { id: '10', lastName: 'Мошнягул', firstName: 'Владислав', group: 'Група 1' },
+            { id: '11', lastName: 'Мусієнко', firstName: 'Владислав', group: 'Група 1' },
+            { id: '12', lastName: 'Романів', firstName: 'Степан', group: 'Група 2' },
+            { id: '13', lastName: 'Сафонов', firstName: 'Гліб', group: 'Група 2' },
+            { id: '14', lastName: 'Сімон-Решетнік', firstName: 'Софія', group: 'Група 2' },
+            { id: '15', lastName: 'Стажинець', firstName: 'Соломія', group: 'Група 2' },
+            { id: '16', lastName: 'Тертична', firstName: 'Марія', group: 'Група 2' },
+            { id: '17', lastName: 'Тюпа', firstName: 'Степан', group: 'Група 2' },
+            { id: '18', lastName: 'Урсул', firstName: 'Поліна', group: 'Група 2' },
+            { id: '19', lastName: 'Хрущова', firstName: 'Лілія', group: 'Група 2' },
+            { id: '20', lastName: 'Черемшинський', firstName: 'Павло', group: 'Група 2' },
+            { id: '21', lastName: 'Ющіна', firstName: 'Марія', group: 'Група 2' }
         ];
 
-        // Точний розклад для 11-А класу з фото УФМЛ КНУ
+        // Точний розклад за вашими скріншотами (об'єднані двійки уроків у пари з відповідним часом)
         const REAL_SCHEDULE_11A = {
             'Mon': [
-                { id: 'm1_1', subject: 'Алгебра', groupTarget: 'Група 1', time: '08:30 - 09:15', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
-                { id: 'm1_2', subject: 'Науковий практикум', groupTarget: 'Група 2', time: '08:30 - 09:15', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
-                { id: 'm2_1', subject: 'Науковий практикум', groupTarget: 'Група 1', time: '09:20 - 10:05', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
-                { id: 'm2_2', subject: 'Алгебра', groupTarget: 'Група 2', time: '09:20 - 10:05', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
-                { id: 'm3', subject: 'Алгебра', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
-                { id: 'm5_1', subject: 'Українська мова', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 323', teacher: 'Арська Ю.М.' },
-                { id: 'm5_2', subject: 'Українська мова', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 320', teacher: 'Тітарець С.С.' },
-                { id: 'm7_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '14:05 - 14:50', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
-                { id: 'm7_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '14:05 - 14:50', room: 'каб. 210', teacher: 'Чумакова О.О.' }
+                { id: 'm1_1', subject: 'Алгебра', groupTarget: 'Група 1', time: '08:30 - 10:05', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'm1_2', subject: 'Науковий практикум', groupTarget: 'Група 2', time: '08:30 - 10:05', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
+                { id: 'm2_1', subject: 'Науковий практикум', groupTarget: 'Група 1', time: '10:35 - 12:10', room: 'Лабораторія 11', teacher: 'Савченко В.М.' },
+                { id: 'm2_2', subject: 'Алгебра', groupTarget: 'Група 2', time: '10:35 - 12:10', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'm3_1', subject: 'Українська мова', groupTarget: 'Група 1', time: '12:20 - 13:55', room: 'каб. 323', teacher: 'Арська Ю.М.' },
+                { id: 'm3_2', subject: 'Українська мова', groupTarget: 'Група 2', time: '12:20 - 13:55', room: 'каб. 320', teacher: 'Тітарець С.С.' },
+                { id: 'm4_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '14:05 - 14:50', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
+                { id: 'm4_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '14:05 - 14:50', room: 'каб. 210', teacher: 'Чумакова О.О.' }
             ],
             'Tue': [
-                { id: 't1', subject: 'Хімія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 302', teacher: 'Копа І.Д.' },
-                { id: 't3', subject: 'Алгебра', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
-                { id: 't5_1', subject: 'Інформаційні технології', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 103', teacher: 'Бодрик О.О.' },
-                { id: 't5_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 210', teacher: 'Чумакова О.О.' },
-                { id: 't6_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '13:10 - 13:55', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
-                { id: 't6_2', subject: 'Інформаційні технології', groupTarget: 'Група 2', time: '13:10 - 13:55', room: 'каб. 105', teacher: 'Мельников Ю.О.' }
+                { id: 't1_1', subject: 'Хімія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 302', teacher: 'Копа І.Д.' },
+                { id: 't1_2', subject: 'Хімія', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'каб. 302', teacher: 'Копа І.Д.' },
+                { id: 't2_1', subject: 'Алгебра', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 't2_2', subject: 'Алгебра', groupTarget: 'ALL', time: '11:25 - 12:10', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 't3_1', subject: 'Інформаційні технології', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 103', teacher: 'Бодрик О.О.' },
+                { id: 't3_2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 210', teacher: 'Чумакова О.О.' },
+                { id: 't4_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '13:10 - 13:55', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
+                { id: 't4_2', subject: 'Інформаційні технології', groupTarget: 'Група 2', time: '13:10 - 13:55', room: 'каб. 105', teacher: 'Мельников Ю.О.' }
             ],
             'Wed': [
-                { id: 'w1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 219', teacher: 'Бакай В.В.' },
-                { id: 'w3_1', subject: 'Інформатика', groupTarget: 'Група 1', time: '10:35 - 11:20', room: 'каб. 103', teacher: 'Бодрик О.О.' },
-                { id: 'w3_2', subject: 'Інформатика', groupTarget: 'Група 2', time: '10:35 - 11:20', room: 'каб. 105', teacher: 'Мельников Ю.О.' },
-                { id: 'w5', subject: 'Фізика', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
-                { id: 'w7', subject: 'Історія України', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 319', teacher: 'Карнаух А.О.' }
+                { id: 'w1_1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'w1_2', subject: 'Геометрія', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'w2_1', subject: 'Інформатика', groupTarget: 'Група 1', time: '10:35 - 12:10', room: 'каб. 103', teacher: 'Бодрик О.О.' },
+                { id: 'w2_2', subject: 'Інформатика', groupTarget: 'Група 2', time: '10:35 - 12:10', room: 'каб. 105', teacher: 'Мельников Ю.О.' },
+                { id: 'w3_1', subject: 'Фізика', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'w3_2', subject: 'Фізика', groupTarget: 'ALL', time: '13:10 - 13:55', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'w4', subject: 'Історія України', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 319', teacher: 'Карнаух А.О.' }
             ],
             'Thu': [
-                { id: 'th1', subject: 'Фізика', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 208', teacher: 'Пашко М.І.' },
-                { id: 'th3', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
-                { id: 'th4', subject: 'Алгебра', groupTarget: 'ALL', time: '11:25 - 12:10', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
-                { id: 'th5', subject: 'Українська література', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 321', teacher: 'Порало Н.Д.' },
-                { id: 'th7', subject: 'Географія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 318', teacher: 'Мельник-Мірзоян А.Л.' }
+                { id: 'th1_1', subject: 'Фізика', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'th1_2', subject: 'Фізика', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'th2_1', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:35 - 11:20', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
+                { id: 'th2_2', subject: 'Алгебра', groupTarget: 'ALL', time: '11:25 - 12:10', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
+                { id: 'th3_1', subject: 'Українська література', groupTarget: 'ALL', time: '12:20 - 13:05', room: 'каб. 321', teacher: 'Порало Н.Д.' },
+                { id: 'th3_2', subject: 'Українська література', groupTarget: 'ALL', time: '13:10 - 13:55', room: 'каб. 321', teacher: 'Порало Н.Д.' },
+                { id: 'th4', subject: 'Географія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 318', teacher: 'Мельник-Мірзоян А.Л.' }
             ],
             'Fri': [
-                { id: 'f1', subject: 'Історія України', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 319', teacher: 'Карнаух А.О.' },
-                { id: 'f2', subject: 'Фізична культура', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
-                { id: 'f3_1', subject: 'Геометрія', groupTarget: 'Група 1', time: '10:35 - 11:20', room: 'каб. 219', teacher: 'Бакай В.В.' },
-                { id: 'f3_2', subject: 'Фізика', groupTarget: 'Група 2', time: '10:35 - 11:20', room: 'каб. 208', teacher: 'Пашко М.І.' },
-                { id: 'f5_1', subject: 'Фізика', groupTarget: 'Група 1', time: '12:20 - 13:05', room: 'каб. 208', teacher: 'Пашко М.І.' },
-                { id: 'f5_2', subject: 'Геометрія', groupTarget: 'Група 2', time: '12:20 - 13:05', room: 'каб. 219', teacher: 'Бакай В.В.' },
-                { id: 'f7_1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 221', teacher: 'Меньша С.Г.' },
-                { id: 'f7_2', subject: 'Астрономія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 217', teacher: 'Пономаренко В.О.' }
+                { id: 'f1_1', subject: 'Історія України', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 319', teacher: 'Карнаух А.О.' },
+                { id: 'f1_2', subject: 'Фізична культура', groupTarget: 'ALL', time: '09:20 - 10:05', room: 'Спорт.зал', teacher: 'Мороз В.М.' },
+                { id: 'f2_1', subject: 'Геометрія', groupTarget: 'Група 1', time: '10:35 - 12:10', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'f2_2', subject: 'Фізика', groupTarget: 'Група 2', time: '10:35 - 12:10', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'f3_1', subject: 'Фізика', groupTarget: 'Група 1', time: '12:20 - 13:55', room: 'каб. 208', teacher: 'Пашко М.І.' },
+                { id: 'f3_2', subject: 'Геометрія', groupTarget: 'Група 2', time: '12:20 - 13:55', room: 'каб. 219', teacher: 'Бакай В.В.' },
+                { id: 'f4_1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 221', teacher: 'Меньша С.Г.' },
+                { id: 'f4_2', subject: 'Астрономія', groupTarget: 'ALL', time: '14:05 - 14:50', room: 'каб. 217', teacher: 'Пономаренко В.О.' }
             ],
             'Sat': [
                 { id: 's1_1', subject: 'Англійська мова', groupTarget: 'Група 1', time: '08:30 - 09:15', room: 'каб. 214', teacher: 'Овдій Ю.В.' },
@@ -599,7 +608,6 @@
         window.setStudentNote = setStudentNote;
         window.setAllAttendance = setAllAttendance;
         window.saveLessonGeneralNote = saveLessonGeneralNote;
-        window.autoCalcEndTime = autoCalcEndTime;
         window.openFirebaseConfigModal = openFirebaseConfigModal;
         window.closeFirebaseConfigModal = closeFirebaseConfigModal;
         window.saveFirebaseConfig = saveFirebaseConfig;
@@ -742,7 +750,7 @@
             lessonNotes = {};
             saveData();
             refreshAllUI();
-            showToast("Розклад 11-А класу успішно оновлено!");
+            showToast("Розклад та список учнів успішно оновлено!");
         }
 
         function refreshAllUI() {
@@ -778,8 +786,6 @@
                 const matchSearch = (s.lastName.toLowerCase().includes(search) || s.firstName.toLowerCase().includes(search));
                 return matchGroup && matchSearch;
             });
-
-            filtered.sort((a, b) => a.lastName.localeCompare(b.lastName, 'uk'));
 
             document.getElementById('students-count-tag').innerText = filtered.length;
 
@@ -926,24 +932,13 @@
             `).join('');
         }
 
-        function autoCalcEndTime() {
-            const startVal = document.getElementById('lesson-time-start').value;
-            if (!startVal) return;
-            const [hours, minutes] = startVal.split(':').map(Number);
-            const startDate = new Date();
-            startDate.setHours(hours, minutes, 0, 0);
-            const endDate = new Date(startDate.getTime() + 45 * 60000);
-            const endHours = String(endDate.getHours()).padStart(2, '0');
-            const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
-            document.getElementById('lesson-time-end').value = `${endHours}:${endMinutes}`;
-        }
-
         function openAddLessonModal() {
             document.getElementById('lesson-form').reset();
             document.getElementById('lesson-id').value = '';
             document.getElementById('modal-title').innerText = "Додати урок в розклад";
             document.getElementById('lesson-day').value = selectedDay;
-            autoCalcEndTime();
+            document.getElementById('lesson-time-start').value = '';
+            document.getElementById('lesson-time-end').value = '';
             document.getElementById('lesson-modal').classList.remove('hidden');
         }
 
@@ -961,9 +956,9 @@
             document.getElementById('lesson-group').value = l.groupTarget || 'ALL';
             document.getElementById('lesson-subject').value = l.subject;
             
-            const times = l.time ? l.time.split(' - ') : ['08:30', '09:15'];
-            document.getElementById('lesson-time-start').value = times[0] || '08:30';
-            document.getElementById('lesson-time-end').value = times[1] || '09:15';
+            const times = l.time ? l.time.split(' - ') : ['', ''];
+            document.getElementById('lesson-time-start').value = times[0] || '';
+            document.getElementById('lesson-time-end').value = times[1] || '';
 
             document.getElementById('lesson-room').value = l.room || '';
             document.getElementById('lesson-teacher').value = l.teacher || '';
@@ -987,7 +982,7 @@
                 id: id || Date.now().toString(),
                 subject,
                 groupTarget,
-                time: `${tStart} - ${tEnd}`,
+                time: (tStart && tEnd) ? `${tStart} - ${tEnd}` : '—',
                 room,
                 teacher
             };
@@ -1110,8 +1105,6 @@
                 return s.group === lesson.groupTarget;
             });
 
-            activeStudents.sort((a, b) => a.lastName.localeCompare(b.lastName, 'uk'));
-
             document.getElementById('attendance-subtitle').innerText = `Список учнів для: ${lesson.subject} (${lesson.groupTarget === 'ALL' ? 'Весь клас' : lesson.groupTarget})`;
 
             if (activeStudents.length === 0) {
@@ -1138,8 +1131,7 @@
                             <div class="inline-flex p-1 bg-slate-100 rounded-xl space-x-1">
                                 <button onclick="setStudentStatus('${s.id}', 'present')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'present' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Присутній</button>
                                 <button onclick="setStudentStatus('${s.id}', 'absent')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'absent' ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Н (Відсутній)</button>
-                                <button onclick="setStudentStatus('${s.id}', 'late')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'late' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Спізнився</button>
-                                <button onclick="setStudentStatus('${s.id}', 'sick')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'sick' ? 'bg-indigo-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Хворіє</button>
+                                <button onclick="setStudentStatus('${s.id}', 'exempt')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${rec.status === 'exempt' ? 'bg-indigo-500 text-white shadow-sm' : 'text-slate-600 hover:text-slate-900'}">Звільнений</button>
                             </div>
 
                             <div class="flex items-center space-x-1">
@@ -1161,19 +1153,17 @@
             const lessonId = document.getElementById('attendance-lesson-select').value;
             const recKeyPrefix = `${dateVal}_${lessonId}_`;
 
-            let present = 0, absent = 0, other = 0;
+            let present = 0, absent = 0;
 
             activeStudents.forEach(s => {
                 const rec = attendanceRecords[recKeyPrefix + s.id] || { status: 'present' };
                 if (rec.status === 'present') present++;
                 else if (rec.status === 'absent') absent++;
-                else other++;
             });
 
             document.getElementById('stat-total').innerText = activeStudents.length;
             document.getElementById('stat-present').innerText = present;
             document.getElementById('stat-absent').innerText = absent;
-            document.getElementById('stat-other').innerText = other;
         }
 
         function setStudentStatus(studentId, status) {
