@@ -145,14 +145,20 @@
                                 <span id="info-group-badge" class="px-2.5 py-0.5 text-[10px] font-extrabold bg-blue-100/80 text-blue-800 border border-blue-200/80 rounded-full">
                                     Весь клас
                                 </span>
-                                <span id="info-merged-badge" class="hidden px-2.5 py-0.5 text-[10px] font-extrabold bg-purple-100 text-purple-700 border border-purple-200 rounded-full">
-                                    <i class="fa-solid fa-link text-[9px] mr-1"></i> Спарений
-                                </span>
                             </div>
                             <p id="info-lesson-details" class="text-xs text-slate-500 font-medium mt-0.5">Оберіть дата/урок для редагування</p>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Блок примітки до уроку -->
+            <div id="lesson-note-box" class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <div class="flex items-center gap-2 text-slate-700 font-bold text-xs whitespace-nowrap">
+                    <i class="fa-solid fa-note-sticky text-brand-600 text-base"></i>
+                    <span>Примітка / Тема уроку:</span>
+                </div>
+                <input type="text" id="lesson-general-note" onchange="saveLessonGeneralNote()" placeholder="Введіть примітку, тему або домашнє завдання до цього уроку..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none transition">
             </div>
 
             <!-- Віджети статистики -->
@@ -378,7 +384,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час початку</label>
-                        <input type="time" id="lesson-time-start" required value="08:30" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
+                        <input type="time" id="lesson-time-start" onchange="autoCalcEndTime()" required value="08:30" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Час закінчення</label>
@@ -395,13 +401,6 @@
                         <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Вчитель</label>
                         <input type="text" id="lesson-teacher" placeholder="напр. Іванова О.М." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-sm font-semibold focus:ring-2 focus:ring-brand-500 outline-none">
                     </div>
-                </div>
-
-                <div class="pt-2">
-                    <label class="flex items-center gap-2.5 cursor-pointer select-none">
-                        <input type="checkbox" id="lesson-merged" class="w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
-                        <span class="text-xs font-bold text-slate-700">Об'єднаний (спарений) урок (2 академічні години)</span>
-                    </label>
                 </div>
 
                 <div class="flex gap-2 pt-3">
@@ -509,28 +508,28 @@
 
         const DEMO_SCHEDULE = {
             'Mon': [
-                { id: 'm1', subject: 'Алгебра', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.', isMerged: false },
-                { id: 'm2', subject: 'Англійська мова', groupTarget: 'Група 1', time: '09:25 - 10:10', room: 'каб. 102', teacher: 'Петренко Н.В.', isMerged: false },
-                { id: 'm3', subject: 'Інформатика', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 308', teacher: 'Гриценко Д.В.', isMerged: false },
-                { id: 'm4', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:25 - 11:55', room: 'Спортзал', teacher: 'Ковальчук В.П.', isMerged: true }
+                { id: 'm1', subject: 'Алгебра', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.' },
+                { id: 'm2', subject: 'Англійська мова', groupTarget: 'Група 1', time: '09:25 - 10:10', room: 'каб. 102', teacher: 'Петренко Н.В.' },
+                { id: 'm3', subject: 'Інформатика', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 308', teacher: 'Гриценко Д.В.' },
+                { id: 'm4', subject: 'Фізична культура', groupTarget: 'ALL', time: '10:25 - 11:10', room: 'Спортзал', teacher: 'Ковальчук В.П.' }
             ],
             'Tue': [
-                { id: 't1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.', isMerged: false },
-                { id: 't2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 401', teacher: 'Сміт Т.О.', isMerged: false },
-                { id: 't3', subject: 'Фізика', groupTarget: 'ALL', time: '10:25 - 11:10', room: 'каб. 310', teacher: 'Захаров С.М.', isMerged: false }
+                { id: 't1', subject: 'Геометрія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 204', teacher: 'Іванова О.М.' },
+                { id: 't2', subject: 'Англійська мова', groupTarget: 'Група 2', time: '09:25 - 10:10', room: 'каб. 401', teacher: 'Сміт Т.О.' },
+                { id: 't3', subject: 'Фізика', groupTarget: 'ALL', time: '10:25 - 11:10', room: 'каб. 310', teacher: 'Захаров С.М.' }
             ],
             'Wed': [
-                { id: 'w1', subject: 'Біологія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 108', teacher: 'Мороз Л.А.', isMerged: false },
-                { id: 'w2', subject: 'Хімія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 109', teacher: 'Павленко К.В.', isMerged: false },
-                { id: 'w3', subject: 'Інформатика (Практика)', groupTarget: 'Група 1', time: '10:25 - 12:00', room: 'каб. 308', teacher: 'Гриценко Д.В.', isMerged: true }
+                { id: 'w1', subject: 'Біологія', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 108', teacher: 'Мороз Л.А.' },
+                { id: 'w2', subject: 'Хімія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 109', teacher: 'Павленко К.В.' },
+                { id: 'w3', subject: 'Інформатика (Практика)', groupTarget: 'Група 1', time: '10:25 - 11:10', room: 'каб. 308', teacher: 'Гриценко Д.В.' }
             ],
             'Thu': [
-                { id: 'th1', subject: 'Українська література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 102', teacher: 'Петренко Н.В.', isMerged: false },
-                { id: 'th2', subject: 'Географія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 215', teacher: 'Ткаченко Ю.В.', isMerged: false }
+                { id: 'th1', subject: 'Українська література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 102', teacher: 'Петренко Н.В.' },
+                { id: 'th2', subject: 'Географія', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 215', teacher: 'Ткаченко Ю.В.' }
             ],
             'Fri': [
-                { id: 'f1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 103', teacher: 'Романова Е.Б.', isMerged: false },
-                { id: 'f2', subject: 'Мистецтво', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 201', teacher: 'Лисенко М.К.', isMerged: false }
+                { id: 'f1', subject: 'Зарубіжна література', groupTarget: 'ALL', time: '08:30 - 09:15', room: 'каб. 103', teacher: 'Романова Е.Б.' },
+                { id: 'f2', subject: 'Мистецтво', groupTarget: 'ALL', time: '09:25 - 10:10', room: 'каб. 201', teacher: 'Лисенко М.К.' }
             ],
             'Sat': []
         };
@@ -548,6 +547,7 @@
         let students = [];
         let schedule = {};
         let attendanceRecords = {};
+        let lessonNotes = {};
 
         let currentTab = 'attendance';
         let selectedDay = 'Mon';
@@ -572,6 +572,8 @@
         window.setStudentGrade = setStudentGrade;
         window.setStudentNote = setStudentNote;
         window.setAllAttendance = setAllAttendance;
+        window.saveLessonGeneralNote = saveLessonGeneralNote;
+        window.autoCalcEndTime = autoCalcEndTime;
         window.openFirebaseConfigModal = openFirebaseConfigModal;
         window.closeFirebaseConfigModal = closeFirebaseConfigModal;
         window.saveFirebaseConfig = saveFirebaseConfig;
@@ -657,6 +659,7 @@
                     students = data.students || DEMO_STUDENTS;
                     schedule = data.schedule || DEMO_SCHEDULE;
                     attendanceRecords = data.attendanceRecords || {};
+                    lessonNotes = data.lessonNotes || {};
                     refreshAllUI();
                 } else {
                     saveData();
@@ -679,6 +682,7 @@
                         students: students,
                         schedule: schedule,
                         attendanceRecords: attendanceRecords,
+                        lessonNotes: lessonNotes,
                         updatedAt: new Date().toISOString()
                     });
                 } catch (e) {
@@ -691,10 +695,12 @@
             const localS = localStorage.getItem('eschool_students');
             const localSch = localStorage.getItem('eschool_schedule');
             const localAtt = localStorage.getItem('eschool_attendance');
+            const localNotes = localStorage.getItem('eschool_notes');
 
             students = localS ? JSON.parse(localS) : JSON.parse(JSON.stringify(DEMO_STUDENTS));
             schedule = localSch ? JSON.parse(localSch) : JSON.parse(JSON.stringify(DEMO_SCHEDULE));
             attendanceRecords = localAtt ? JSON.parse(localAtt) : {};
+            lessonNotes = localNotes ? JSON.parse(localNotes) : {};
             refreshAllUI();
         }
 
@@ -702,12 +708,14 @@
             localStorage.setItem('eschool_students', JSON.stringify(students));
             localStorage.setItem('eschool_schedule', JSON.stringify(schedule));
             localStorage.setItem('eschool_attendance', JSON.stringify(attendanceRecords));
+            localStorage.setItem('eschool_notes', JSON.stringify(lessonNotes));
         }
 
         function resetToDemoData() {
             students = JSON.parse(JSON.stringify(DEMO_STUDENTS));
             schedule = JSON.parse(JSON.stringify(DEMO_SCHEDULE));
             attendanceRecords = {};
+            lessonNotes = {};
             saveData();
             refreshAllUI();
             showToast("Дані успішно скинуто до демо-версії");
@@ -881,7 +889,6 @@
                                 <span class="px-2 py-0.5 text-[10px] font-bold ${l.groupTarget === 'ALL' ? 'bg-slate-200 text-slate-700' : 'bg-blue-100 text-blue-800'} rounded-md">
                                     ${l.groupTarget === 'ALL' ? 'Весь клас' : l.groupTarget}
                                 </span>
-                                ${l.isMerged ? `<span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 text-purple-700 rounded-md"><i class="fa-solid fa-link mr-1"></i> Спарений</span>` : ''}
                             </div>
                             <div class="text-xs text-slate-500 mt-1 flex items-center gap-3">
                                 <span><i class="fa-regular fa-clock mr-1"></i> ${l.time}</span>
@@ -898,11 +905,24 @@
             `).join('');
         }
 
+        function autoCalcEndTime() {
+            const startVal = document.getElementById('lesson-time-start').value;
+            if (!startVal) return;
+            const [hours, minutes] = startVal.split(':').map(Number);
+            const startDate = new Date();
+            startDate.setHours(hours, minutes, 0, 0);
+            const endDate = new Date(startDate.getTime() + 45 * 60000);
+            const endHours = String(endDate.getHours()).padStart(2, '0');
+            const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
+            document.getElementById('lesson-time-end').value = `${endHours}:${endMinutes}`;
+        }
+
         function openAddLessonModal() {
             document.getElementById('lesson-form').reset();
             document.getElementById('lesson-id').value = '';
             document.getElementById('modal-title').innerText = "Додати урок в розклад";
             document.getElementById('lesson-day').value = selectedDay;
+            autoCalcEndTime();
             document.getElementById('lesson-modal').classList.remove('hidden');
         }
 
@@ -926,7 +946,6 @@
 
             document.getElementById('lesson-room').value = l.room || '';
             document.getElementById('lesson-teacher').value = l.teacher || '';
-            document.getElementById('lesson-merged').checked = !!l.isMerged;
 
             document.getElementById('modal-title').innerText = "Редагувати урок";
             document.getElementById('lesson-modal').classList.remove('hidden');
@@ -942,7 +961,6 @@
             const tEnd = document.getElementById('lesson-time-end').value;
             const room = document.getElementById('lesson-room').value.trim();
             const teacher = document.getElementById('lesson-teacher').value.trim();
-            const isMerged = document.getElementById('lesson-merged').checked;
 
             const lessonObj = {
                 id: id || Date.now().toString(),
@@ -950,8 +968,7 @@
                 groupTarget,
                 time: `${tStart} - ${tEnd}`,
                 room,
-                teacher,
-                isMerged
+                teacher
             };
 
             if (!schedule[day]) schedule[day] = [];
@@ -1022,25 +1039,36 @@
             const nameEl = document.getElementById('info-lesson-name');
             const detailsEl = document.getElementById('info-lesson-details');
             const groupBadge = document.getElementById('info-group-badge');
-            const mergedBadge = document.getElementById('info-merged-badge');
+            const noteInput = document.getElementById('lesson-general-note');
 
             if (lesson) {
                 nameEl.innerText = lesson.subject;
                 detailsEl.innerText = `${lesson.time} | ${lesson.room || 'без кабінету'} | Вчитель: ${lesson.teacher || '—'}`;
                 groupBadge.innerText = lesson.groupTarget === 'ALL' ? 'Весь клас' : lesson.groupTarget;
-                if (lesson.isMerged) {
-                    mergedBadge.classList.remove('hidden');
-                } else {
-                    mergedBadge.classList.add('hidden');
-                }
+                
+                const noteKey = `${dateVal}_${lessonId}`;
+                noteInput.value = lessonNotes[noteKey] || '';
             } else {
                 nameEl.innerText = "Урок не обрано";
                 detailsEl.innerText = "Оберіть дата/урок для редагування";
                 groupBadge.innerText = "—";
-                mergedBadge.classList.add('hidden');
+                noteInput.value = '';
             }
 
             renderAttendanceList();
+        }
+
+        function saveLessonGeneralNote() {
+            const dateVal = document.getElementById('attendance-date').value;
+            const lessonId = document.getElementById('attendance-lesson-select').value;
+            if (!lessonId) return;
+
+            const noteKey = `${dateVal}_${lessonId}`;
+            const noteVal = document.getElementById('lesson-general-note').value;
+            lessonNotes[noteKey] = noteVal;
+
+            saveData();
+            showToast("Примітку до уроку збережено");
         }
 
         function renderAttendanceList() {
@@ -1103,7 +1131,7 @@
                             </div>
 
                             <!-- Коментар -->
-                            <input type="text" value="${rec.note || ''}" onchange="setStudentNote('${s.id}', this.value)" placeholder="Примітка..." class="w-36 sm:w-44 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs font-medium focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
+                            <input type="text" value="${rec.note || ''}" onchange="setStudentNote('${s.id}', this.value)" placeholder="Примітка до учня..." class="w-36 sm:w-44 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1 text-xs font-medium focus:bg-white focus:ring-2 focus:ring-brand-500 outline-none">
                         </div>
                     </div>
                 `;
