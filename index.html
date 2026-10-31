@@ -508,10 +508,10 @@
             { id: '18', lastName: 'Урсул', firstName: 'Поліна', group: 'Група 2' },
             { id: '19', lastName: 'Хрущова', firstName: 'Лілія', group: 'Група 2' },
             { id: '20', lastName: 'Черемшинський', firstName: 'Павло', group: 'Група 2' },
-            { id: '21', lastName: 'Ющіна', firstName: 'Марія', group: 'Група 2' }
+            { id: '21', lastName: 'Юштіна', firstName: 'Марія', group: 'Група 2' }
         ];
 
-        // Точний розклад за вашими скріншотами (об'єднані двійки уроків у пари з відповідним часом)
+        // Точний розклад за наданими скріншотами
         const REAL_SCHEDULE_11A = {
             'Mon': [
                 { id: 'm1_1', subject: 'Алгебра', groupTarget: 'Група 1', time: '08:30 - 10:05', room: 'каб. 308', teacher: 'Вишенська І.Я.' },
@@ -1027,6 +1027,9 @@
             const dayLessons = schedule[dayKey] || [];
             const select = document.getElementById('attendance-lesson-select');
 
+            // Зберігаємо поточний обраний урок перед оновленням
+            const currentSelectedId = select.value;
+
             if (dayLessons.length === 0) {
                 select.innerHTML = `<option value="">(Немає уроків на цей день)</option>`;
             } else {
@@ -1035,6 +1038,11 @@
                         ${l.subject} (${l.time}) ${l.groupTarget !== 'ALL' ? '[' + l.groupTarget + ']' : ''}
                     </option>
                 `).join('');
+
+                // Відновлюємо вибір попереднього уроку, якщо він є у списку
+                if (currentSelectedId && dayLessons.some(l => l.id === currentSelectedId)) {
+                    select.value = currentSelectedId;
+                }
             }
 
             onAttendanceLessonChange();
